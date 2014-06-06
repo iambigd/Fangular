@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('fe0.helper', [])
+angular.module('myApp.helper', [])
 .value('version', '0.4.2')
 /**
  *                     bbbbbbbb
@@ -204,7 +204,7 @@ angular.module('fe0.helper', [])
 		 *
 		 *	Usages:
 		 *
-		 *	renameProperty( obj, "fe0", "festum" );
+		 *	renameProperty( obj, "myApp", "festum" );
 		 *
 		 * @function renameProperty( obj, oldName, newName )
 		 * @param object

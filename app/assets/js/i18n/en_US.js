@@ -1,4 +1,4 @@
-angular.module('fe0.controllers').config(function ($translateProvider) {
+angular.module('myApp.controllers').config(function ($translateProvider) {
 	$translateProvider.translations('en', {
 		TITLE: 'Fangular',
 		USERNAME: 'Username',

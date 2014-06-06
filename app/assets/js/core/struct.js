@@ -1,22 +1,22 @@
 'use strict';
 
-angular.module('fe0.controllers', [
-	'fe0.helper',
-	'fe0.directives',
-	'fe0.services',
+angular.module('myApp.controllers', [
+	'myApp.helper',
+	'myApp.directives',
+	'myApp.services',
 	'ui.bootstrap',
 	'pascalprecht.translate'
 ]);
 
-angular.module('fe0.services', [
+angular.module('myApp.services', [
 
 ]);
 
-angular.module('fe0.directives', [
+angular.module('myApp.directives', [
 
 ]);
 
-angular.module('fe0.filters', [
+angular.module('myApp.filters', [
 
 ]);
 

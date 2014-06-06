@@ -5,30 +5,28 @@
 	<title>Fangular</title>
 </head>
 <body class="ng-cloak">
+
 <header class="navbar navbar-default navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
 			<nav class="hidden-xs">
 				<ul class="nav navbar-nav">
-					<a href="#" role="button" class="navbar-brand">
-						Fangular
+					<a ui-sref="home" role="button" class="navbar-brand">
+						Fangular Seed
 					</a>
-					<li class="dropdown">
-						<a href="#" role="button" class="dropdown-toggle">
-							Partials <b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#/main">Page1</a></li>
-							<li><a href="#/conf">Page2</a></li>
-						</ul>
-					</li>
+					<li ng-class="{active: $state.includes('list')}">
+						<a ui-sref-active="active" ui-sref="list">Shopping</a></li>
+					<li ng-class="{active: $state.includes('conf')}">
+						<a ui-sref-active="active" ui-sref="conf">Conf</a></li>
 					<li><a href="#getting_started">Here here</a></li>
 				</ul>
 			</nav>
 		</div>
 	</div>
 </header>
+
 <div class="header-placeholder"></div>
+
 <div role="main">
 	<header class="bs-header text-center" id="overview">
 		<div class="container">
@@ -36,20 +34,22 @@
 				Fangular
 			</h1>
 			<p>Powered by <span class="small">Festum</span></p>
+
 			<p>
-				<a class="btn btn-outline-inverse btn-lg" href="http://github.com/Festum/Fangular"><i class="icon-github"></i>Code on Github</a>
-				<a class="btn btn-outline-inverse btn-lg" href="http://github.com/Festum/Fangular/archive/master.zip">
-					<i class="glyphicon glyphicon-download-alt"></i> Download <small>(0.10.0)</small>
-				</a>
-				<a class="btn btn-outline-inverse btn-lg" href="http://facebook.com/festum"><i class="icon-wrench"></i> Find Festum</a>
+			    Build Angular APP is EASY.
 			</p>
 		</div>
 	</header>
-	<div class="container" ng-view></div>
-	<footer class="footer">
-		<div class="container">
-			<div>Fangular: v<span app-version></span></div>
-		</div>
-	</footer>
+	<!--ui-view-->
+	<div ui-view></div>
+
+</div>
+
+
+<footer class="footer">
+	<div class="container">
+		<div>Fangular: v<span app-version></span></div>
+	</div>
+</footer>
 </body>
 </html>
