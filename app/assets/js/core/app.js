@@ -52,43 +52,125 @@ app.run(['$rootScope','$log', '$state', '$stateParams', function ($rootScope, $l
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider',
 	function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
+		// Anonymous routes
+    	$stateProvider
+	        .state('anon', {
+	            abstract: true,
+	            template: '<ui-view/>'
+	        })
+	        .state('anon.login', {
+	            url: '/login',
+	            templateUrl: 'partials/login.html',
+	            controller: 'LoginCtrl'
+	        })
+
+		// Public routes
+
 		// Use $stateProvider to configure your states.
 		$stateProvider
-			.state('home', {
+			 .state('public', {
+	            abstract: true,
+	            template: '<ui-view/>',
+	            data: {
+
+	            }
+	        })
+	        .state('public.404', {
+	            url: '/404',
+	            templateUrl: 'partials/404.html'
+	        })
+
+	        //Multiple Named Views
+			.state('public.home', {
 				url: '/home',
-				templateUrl: 'partials/home.html',
-				controller: 'HomeCtrl'
+
+				views:{
+
+					// the main template will be placed here (relatively named)
+					// replace unnamed view '<div ui-view></div>'  in this state's parent state, 'home'.
+		            '' : {
+		            	templateUrl: 'partials/home/home.html'
+		        	},
+
+		            //viewname@statusname
+
+		            // the child views will be defined here (absolutely named)
+
+		            'header@public.home': {
+		            	templateUrl: 'partials/global.header.html'
+
+		            },
+
+		            'main_body@public.home': {
+
+		            	templateUrl: 'partials/home/home.body.html',
+		            	controller: 'HomeCtrl'
+		           	},
+
+		            // for column two, we'll define a separate controller
+		            'footer@public.home': {
+		                templateUrl: 'partials/global.footer.html'
+		            }
+
+				}
 			})
-			.state('list', {
-				url: '/list',
-				templateUrl: 'partials/list.html',
-				controller: 'ListCtrl'
+
+
+			.state('public.shopping', {
+				url: '/shopping',
+
+				views:{
+
+					// the main template will be placed here (relatively named)
+					// replace unnamed view '<div ui-view></div>'  in this state's parent state, 'home'.
+		            '' : {
+		            	templateUrl: 'partials/shopping/shopping.html'
+		        	},
+
+		            //viewname@statusname
+
+		            // the child views will be defined here (absolutely named)
+
+		            'header@public.shopping': {
+		            	templateUrl: 'partials/global.header.html'
+
+		            },
+
+		            'main_body@public.shopping': {
+
+		            	templateUrl: 'partials/shopping/shopping.body.html',
+		            	controller: 'ShoppingCtrl'
+		           	},
+
+		            // for column two, we'll define a separate controller
+		            'footer@public.shopping': {
+		                templateUrl: 'partials/global.footer.html'
+		            }
+
+				}
 			})
-			.state('list.item', {
+
+
+			//nested view from parent status 'public.shopping'
+			.state('public.shopping.item', {
 				url: '/:item',
-				templateUrl: 'partials/list.item.html',
+				templateUrl: 'partials/shopping/shopping.item.html',
+
 				controller: function($scope, $stateParams) {
 					$scope.item = $stateParams.item;
 				}
 			})
-			.state('404', {
-				url: '/404',
-				templateUrl: 'partials/404.html',
-				controller: function($scope, $stateParams) {
-					// console.log("load 404 controller");
-					$scope.item = $stateParams.item;
-				}
-			})
-			.state('conf', {
+
+			//conf page does not include header/footer views
+			.state('public.conf', {
 				url: '/conf',
 				templateUrl: 'partials/conf.html',
 				controller: 'ConfCtrl'
 			});
 
 
+		// if no url matchs, it will redirect to 404 page
 		$urlRouterProvider.otherwise('/404');
-		// $urlRouterProvider.otherwise('/home');
-
 
 
 	    // it will cause infinie loop

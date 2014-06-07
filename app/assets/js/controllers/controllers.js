@@ -1,11 +1,24 @@
-angular.module('myApp.controllers').controller('HomeCtrl', function($scope, $log) {
-  $log.log('load home page');
+angular.module('myApp.controllers').controller('LoginCtrl', function($scope, $log) {
+  $log.log('load login page');
 
-  $scope.hello = "Hello Angular..";
 
 });
 
-angular.module('myApp.controllers').controller('ListCtrl', function($scope, $log, $http) {
+angular.module('myApp.controllers').controller('LoginCtrl', function($scope, $log) {
+  $log.log('load home page');
+
+  $scope.login = function(credentials){
+      $log.log(credentials);
+  }
+
+});
+
+angular.module('myApp.controllers').controller('HomeCtrl', function($scope, $log) {
+  $log.log('load home page');
+
+});
+
+angular.module('myApp.controllers').controller('ShoppingCtrl', function($scope, $log, $http) {
   $log.log('load list page');
 
   $scope.shoppingList = [{

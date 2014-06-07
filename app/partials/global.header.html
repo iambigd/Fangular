@@ -1,0 +1,32 @@
+<header class="navbar navbar-default navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<nav class="hidden-xs">
+				<ul class="nav navbar-nav">
+					<a ui-sref="public.home" role="button" class="navbar-brand">
+						Fangular Seed
+					</a>
+					<li ng-class="{active: $state.includes('public.shopping')}">
+						<a ui-sref-active="active" ui-sref="public.shopping">Shopping</a></li>
+					<li ng-class="{active: $state.includes('public.conf')}">
+						<a ui-sref-active="active" ui-sref="public.conf">Conf</a></li>
+					<li>
+						<a ui-sref="anon.login">Login</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</header>
+
+<div role="main">
+	<header class="bs-header text-center" id="overview">
+		<div class="container">
+			<h1>
+				Fangular
+			</h1>
+			<p>
+			    Build Angular APP is EASY.
+			</p>
+		</div>
+	</header>
+</div>
