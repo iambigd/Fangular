@@ -8,6 +8,7 @@ angular.module('myApp.controllers').controller('LoginCtrl', function($scope, $lo
   $log.log('load home page');
 
   $scope.login = function(credentials){
+      $log.log("user login");
       $log.log(credentials);
   }
 
