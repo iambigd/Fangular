@@ -21,24 +21,29 @@ angular.module('myApp.helper', [])
 	guest: 'guest'
 })
 
-.factory('AuthService', ['$http', '$log', 'Session', 'USER_ROLES','ServerConfig',function($http, $log, Session, USER_ROLES, ServerConfig) {
+.factory('AuthService', ['$http', '$log', 'Session', 'USER_ROLES','ServerConfig',
+	function($http, $log, Session, USER_ROLES, ServerConfig) {
 
 	return {
 
-		login: function(credentials) {
+		login: function(credentials,success,error) {
 
-
-
+			//build api endpoint
 			var apiEndpoint = ServerConfig.endpoint + 'auth/login', credentials;
 			$log.log('call login api:' + apiEndpoint);
 			$log.log(credentials);
+
 			return $http
 				.post(apiEndpoint)
-				.then(function(res) {
+				.success(function(res) {
 					$log.log('resposne');
 					$log.log(res);
 					Session.create(res.id, res.userid, res.role);
-				});
+				}).error(error);
+		},
+
+		logout: function(){
+
 		},
 
 		isAuthenticated: function() {
@@ -48,7 +53,6 @@ angular.module('myApp.helper', [])
 		isAuthorized: function(authorizedRoles) {
 			$log.log('isAuthorized role:' + authorizedRoles);
 			$log.log('Session.userRole:' + Session.userRole);
-
 
 			if (!angular.isArray(authorizedRoles)) {
 				authorizedRoles = [authorizedRoles];
@@ -167,8 +171,7 @@ angular.module('myApp.helper', [])
 	// }));
 
 	var serverConfig = this;
-	serverConfig.endpoint = "http://acer.iangel.tw/";
-
+	serverConfig.endpoint = "http://localhost/";
 	return serverConfig;
 })
 
@@ -537,105 +540,6 @@ angular.module('myApp.helper', [])
 	};
 })
 
-/*
- * MMMMMMMM               MMMMMMMM               AAA               NNNNNNNN        NNNNNNNN
- * M:::::::M             M:::::::M              A:::A              N:::::::N       N::::::N
- * M::::::::M           M::::::::M             A:::::A             N::::::::N      N::::::N
- * M:::::::::M         M:::::::::M            A:::::::A            N:::::::::N     N::::::N
- * M::::::::::M       M::::::::::M           A:::::::::A           N::::::::::N    N::::::N
- * M:::::::::::M     M:::::::::::M          A:::::A:::::A          N:::::::::::N   N::::::N
- * M:::::::M::::M   M::::M:::::::M         A:::::A A:::::A         N:::::::N::::N  N::::::N
- * M::::::M M::::M M::::M M::::::M        A:::::A   A:::::A        N::::::N N::::N N::::::N
- * M::::::M  M::::M::::M  M::::::M       A:::::A     A:::::A       N::::::N  N::::N:::::::N
- * M::::::M   M:::::::M   M::::::M      A:::::AAAAAAAAA:::::A      N::::::N   N:::::::::::N
- * M::::::M    M:::::M    M::::::M     A:::::::::::::::::::::A     N::::::N    N::::::::::N
- * M::::::M     MMMMM     M::::::M    A:::::AAAAAAAAAAAAA:::::A    N::::::N     N:::::::::N
- * M::::::M               M::::::M   A:::::A             A:::::A   N::::::N      N::::::::N
- * M::::::M               M::::::M  A:::::A               A:::::A  N::::::N       N:::::::N
- * M::::::M               M::::::M A:::::A                 A:::::A N::::::N        N::::::N
- * MMMMMMMM               MMMMMMMMAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNN
- */
-.factory('man', function() {
-	return {
-		/**
-		 * Error Mananager
-		 *
-		 * @author Festum
-		 * @date 131113
-		 */
-		error: function(statuscode) {
-			var message = 'Unknow Error!';
-			switch (statuscode) {
-				case 0:
-					message = 'Success but not working properly';
-					break;
-				case 50:
-					message = 'Database connection failure';
-					break;
-				case 51:
-					message = 'The requested resource is missing or not found from database';
-					break;
-				case 52:
-					message = 'File not found';
-					break;
-				case 60:
-					message = 'Illegal input argument (Including JSON body or header field)';
-					break;
-				case 61:
-					message = 'Inacceptable argument that exceeds the limitation of the requested service';
-					break;
-				case 62:
-					message = 'Expectation failed (Include received unexpected byte stream)';
-					break;
-				case 63:
-					message = 'Duplicate request (any request likes insert a record, create an object which is existing)';
-					break;
-				case 66:
-					message = 'Object locking, try later';
-					break;
-				case 70:
-					message = 'Insufficient storage space on the server';
-					break;
-				case 71:
-					message = 'Insufficient free space for the user';
-					break;
-				case 72:
-					message = 'Insufficient storage space for temporary cache on the server.';
-					break;
-				case 99:
-					message = 'API blow up due to something uncaptured';
-					break;
-				case 101:
-					message = 'Duplicated request with type conflicts';
-					break;
-				case 102:
-					message = 'Resource is inaccessible since it had been locked by other request';
-					break;
-				case 103:
-					message = 'Permission denied';
-					break;
-				case 104:
-					message = 'Operating behavior is not allowed';
-					break;
-				case 400:
-					message = 'Bad Request check your request';
-					break;
-				case 401:
-					message = 'Authentication failed';
-					break;
-				case 405:
-					message = 'Method not allowed change your request type';
-					break;
-				case 500:
-					message = 'API blow up due to something uncaptured';
-					break;
-				default:
-					statuscode = '@@';
-			}
-			return message;
-		},
-	};
-})
 
 /*
  *           JJJJJJJJJJJ   SSSSSSSSSSSSSSS      OOOOOOOOO     NNNNNNNN        NNNNNNNN
