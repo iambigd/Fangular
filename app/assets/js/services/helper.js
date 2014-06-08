@@ -50,6 +50,8 @@ angular.module('myApp.helper', [])
 			if(USER_ROLES.all == authorizedRoles){
 				$log.log('access public page');
 				return true;
+			}else if(USER_ROLES.guest == authorizedRoles){
+				return true;
 			}else{
 				return (this.isAuthenticated() &&
 					authorizedRoles.indexOf(Session.userRole) !== -1);
