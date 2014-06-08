@@ -21,15 +21,22 @@ angular.module('myApp.helper', [])
 	guest: 'guest'
 })
 
-.factory('AuthService', function($http, $log, Session, USER_ROLES) {
+.factory('AuthService', ['$http', '$log', 'Session', 'USER_ROLES','ServerConfig',function($http, $log, Session, USER_ROLES, ServerConfig) {
+
 	return {
 
 		login: function(credentials) {
-			return $http
-				.post('/auth/login', credentials)
-				.then(function(res) {
-					$log.log(res);
 
+
+
+			var apiEndpoint = ServerConfig.endpoint + 'auth/login', credentials;
+			$log.log('call login api:' + apiEndpoint);
+			$log.log(credentials);
+			return $http
+				.post(apiEndpoint)
+				.then(function(res) {
+					$log.log('resposne');
+					$log.log(res);
 					Session.create(res.id, res.userid, res.role);
 				});
 		},
@@ -60,7 +67,7 @@ angular.module('myApp.helper', [])
 		}
 	};
 
-})
+}])
 
 /*
  * Simple auth interceptor
@@ -124,6 +131,54 @@ angular.module('myApp.helper', [])
 	};
 
 	return sessionObj;
+})
+
+/***
+ *      /$$$$$$   /$$$$$$  /$$   /$$ /$$$$$$$$ /$$$$$$  /$$$$$$
+ *     /$$__  $$ /$$__  $$| $$$ | $$| $$_____/|_  $$_/ /$$__  $$
+ *    | $$  \__/| $$  \ $$| $$$$| $$| $$        | $$  | $$  \__/
+ *    | $$      | $$  | $$| $$ $$ $$| $$$$$     | $$  | $$ /$$$$
+ *    | $$      | $$  | $$| $$  $$$$| $$__/     | $$  | $$|_  $$
+ *    | $$    $$| $$  | $$| $$\  $$$| $$        | $$  | $$  \ $$
+ *    |  $$$$$$/|  $$$$$$/| $$ \  $$| $$       /$$$$$$|  $$$$$$/
+ *     \______/  \______/ |__/  \__/|__/      |______/ \______/
+ *
+ *
+ *
+ */
+
+.service('ServerConfig', function($location) {
+	// var project = $location.absUrl().split('/')[3],
+	// 	project = project.search("#") > 0 ? project : '';
+	// return JSON.parse(angular.toJson({
+	// 	site: {
+	// 		protocal: $location.protocol(),
+	// 		server: $location.host(),
+	// 		project: project,
+	// 		port: $location.port(),
+	// 		endpoint: $location.protocol()
+	// 			+ '://' + $location.host()
+	// 			+ ($location.port() == '80' || $location.port() == '443' ? '' : $location.port())
+	// 			+ (project == '' ? '' : '/' + project) + '/#',
+	// 		draggable: true,
+	// 		sort: 'nmst',
+	// 		orders: '1010',
+	// 	}
+	// }));
+
+	var serverConfig = this;
+	serverConfig.endpoint = "http://acer.iangel.tw/";
+
+	return serverConfig;
+})
+
+.factory('ServerConfigFile', function($resource) {
+	return $resource('config.json', {}, {
+		getData: {
+			method: 'GET',
+			isArray: false
+		}
+	});
 })
 
 /**

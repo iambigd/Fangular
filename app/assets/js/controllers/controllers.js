@@ -1,17 +1,19 @@
-angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log','AuthService', function($scope, $log,$AuthService) {
+angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log', 'AuthService', function($scope, $log, AuthService) {
   $log.log('load login page');
+
+  $scope.login = function(credentials){
+      $log.log('user login');
+      $log.log(credentials);
+
+      credentials = {};
+      credentials.account = 'oyster';
+      credentials.pwd = '123456789';
+
+      AuthService.login(credentials);
+  }
 
 }]);
 
-angular.module('myApp.controllers').controller('LoginCtrl', function($scope, $log) {
-  $log.log('load home page');
-
-  $scope.login = function(credentials){
-      $log.log("user login");
-      $log.log(credentials);
-  }
-
-});
 
 angular.module('myApp.controllers').controller('HomeCtrl', function($scope, $log) {
   $log.log('load home page');
@@ -52,9 +54,6 @@ angular.module('myApp.controllers').controller('ShoppingCtrl', function($scope, 
 
 });
 
-angular.module('myApp.controllers').controller('ConfCtrl', function($scope, $log, configFile) {
-  configFile.get(function(data) {
-    $log.log(data);
-    $scope.config = data;
-  });
+angular.module('myApp.controllers').controller('ConfCtrl', function($scope, $log) {
+
 });

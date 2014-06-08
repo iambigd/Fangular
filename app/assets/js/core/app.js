@@ -60,7 +60,7 @@ app.run(['$rootScope', '$log', '$state', '$stateParams', 'AuthService', 'AUTH_EV
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 'USER_ROLES',
-	function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, USER_ROLES) {
+	function( $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, USER_ROLES) {
 
 		$httpProvider.interceptors.push([
 			'$injector',
@@ -199,7 +199,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 		$httpProvider.interceptors.push(function($q, $location) {
 			return {
 				'responseError': function(response) {
-					$log.log('responseError');
+
 					// if(response.status === 401 || response.status === 403) {
 					//     $location.path('/login');
 					// }
@@ -213,33 +213,3 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 
 
 
-/**
- * Configuration
- *
- * @author Festum
- */
-app.factory('config', function($location) {
-	var project = $location.absUrl().split('/')[3],
-		project = project.search("#") > 0 ? project : '';
-	return JSON.parse(angular.toJson({
-		site: {
-			protocal: $location.protocol(),
-			server: $location.host(),
-			project: project,
-			port: $location.port(),
-			endpoint: $location.protocol() + '://' + $location.host() + ($location.port() == '80' || $location.port() == '443' ? '' : $location.port()) + (project == '' ? '' : '/' + project) + '/#',
-			draggable: true,
-			sort: 'nmst',
-			orders: '1010',
-		}
-	}));
-});
-
-app.factory('configFile', function($resource) {
-	return $resource('config.json', {}, {
-		getData: {
-			method: 'GET',
-			isArray: false
-		}
-	});
-});
