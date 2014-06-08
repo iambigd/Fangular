@@ -3,7 +3,7 @@
 	    <div class="panel panel-default">
 		  <div class="panel-heading">
 		  	<h3 class="panel-title">
-		  		<strong>Sign in</strong>
+		  		<strong>登入</strong>
 		  	</h3>
 		  </div>
 
@@ -13,16 +13,15 @@
 			<!-- EMAIL -->
 	        <div class="form-group"
 	        ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
-	            <label>Email</label>
-	            <input type="email" name="email" class="form-control" ng-model="user.email">
-	            <p ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="help-block">Enter a valid email.</p>
+	            <label>信箱</label>
+	            <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="信箱: hello@acer.com">
+	            <p ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="help-block">請輸入正確的信箱格式</p>
 	        </div>
 	        <!-- PWD -->
 			<div class="form-group">
-			    <label for="password">Password
-			    	<a href="">(forgot password)</a>
+			    <label for="password">密碼
 			    </label>
-			    <input type="password" class="form-control" style="border-radius:0px" id="password" ng-model="user.password" placeholder="Password" />
+			    <input type="password" class="form-control" style="border-radius:0px" id="password" ng-model="user.password" placeholder="密碼" />
 
 			 </div>
 			  <button type="submit" class="btn btn-sm btn-default pull-right"

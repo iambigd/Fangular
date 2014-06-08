@@ -1,7 +1,129 @@
 "use strict";
 
 angular.module('myApp.helper', [])
-.value('version', '0.4.2')
+
+.value('version', '0.0.1')
+
+
+.constant('AUTH_EVENTS', {
+	loginSuccess: 'auth-login-success',
+	loginFailed: 'auth-login-failed',
+	logoutSuccess: 'auth-logout-success',
+	sessionTimeout: 'auth-session-timeout',
+	notAuthenticated: 'auth-not-authenticated',
+	notAuthorized: 'auth-not-authorized'
+})
+
+.constant('USER_ROLES', {
+	all: '*',
+	admin: 'admin',
+	editor: 'editor',
+	guest: 'guest'
+})
+
+.factory('AuthService', function($http, $log, Session, USER_ROLES) {
+	return {
+
+		login: function(credentials) {
+			return $http
+				.post('/auth/login', credentials)
+				.then(function(res) {
+					$log.log(res);
+
+					Session.create(res.id, res.userid, res.role);
+				});
+		},
+
+		isAuthenticated: function() {
+			return !!Session.userId;
+		},
+
+		isAuthorized: function(authorizedRoles) {
+			$log.log('isAuthorized role:' + authorizedRoles);
+			$log.log('Session.userRole:' + Session.userRole);
+
+
+			if (!angular.isArray(authorizedRoles)) {
+				authorizedRoles = [authorizedRoles];
+			}
+
+			if(USER_ROLES.all == authorizedRoles){
+				$log.log('access public page');
+				return true;
+			}else{
+				return (this.isAuthenticated() &&
+					authorizedRoles.indexOf(Session.userRole) !== -1);
+			}
+
+		}
+	};
+
+})
+
+/*
+ * Simple auth interceptor
+ * It can be ehanced with this great github repo
+ * 'https://github.com/witoldsz/angular-http-auth/blob/master/src/http-auth-interceptor.js'
+ *
+ */
+
+.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
+
+	/*
+	401 Unauthorized — The user is not logged in
+	403 Forbidden — The user is logged in but isn’t allowed access
+	419 Authentication Timeout (non standard) — Session has expired
+	440 Login Timeout (Microsoft only) — Session has expired
+	*/
+	return {
+		responseError: function(response) {
+			if (response.status === 401) {
+				$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated,
+					response);
+			}
+			if (response.status === 403) {
+				$rootScope.$broadcast(AUTH_EVENTS.notAuthorized,
+					response);
+			}
+			if (response.status === 419 || response.status === 440) {
+				$rootScope.$broadcast(AUTH_EVENTS.sessionTimeout,
+					response);
+			}
+			return $q.reject(response);
+		}
+	};
+})
+
+//session store
+.service('Session', function() {
+
+	var sessionObj = this;
+
+	var sessionId = null;
+	var userId = null;
+	var userRole = null;
+
+	sessionObj.create = function(sessionId, userId, userRole) {
+		sessionId = sessionId;
+		userId = userId;
+		userRole = userRole;
+	};
+	sessionObj.destroy = function() {
+		sessionId = null;
+		userId = null;
+		userRole = null;
+	};
+	sessionObj.getSession = function(){
+		return {
+			sessionId : sessionId,
+			userid: userId,
+			userRole: userRole
+		}
+	};
+
+	return sessionObj;
+})
+
 /**
  *                     bbbbbbbb
  *       OOOOOOOOO     b::::::b                         jjjj
@@ -34,7 +156,7 @@ angular.module('myApp.helper', [])
  * @author Festum
  * @date 130910
  */
-.factory('objHandler', function () {
+.factory('objHandler', function() {
 	/**
 	 * isDOMNode
 	 *
@@ -47,10 +169,10 @@ angular.module('myApp.helper', [])
 	 * @date 130911
 	 */
 	var isDOMNode = function() {
-		return function (v) {
-			if ( v===null ) return false;
-			if ( typeof v!=='object' ) return false;
-			if ( !('nodeName' in v) ) return false;
+		return function(v) {
+			if (v === null) return false;
+			if (typeof v !== 'object') return false;
+			if (!('nodeName' in v)) return false;
 
 			var nn = v.nodeName;
 			try {
@@ -62,7 +184,7 @@ angular.module('myApp.helper', [])
 				return true;
 			}
 			// ...but others silently ignore the attempt to set the nodeName.
-			if ( v.nodeName===nn ) return true;
+			if (v.nodeName === nn) return true;
 			// Property nodeName set (and reset) - v is not a DOM node.
 			v.nodeName = nn;
 			return false;
@@ -82,10 +204,14 @@ angular.module('myApp.helper', [])
 		 * @param obj2
 		 * @returns obj3 a new object based on obj1 and obj2
 		 */
-		mergeTwo: function (obj1, obj2) {
+		mergeTwo: function(obj1, obj2) {
 			var obj3 = {};
-			for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-			for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+			for (var attrname in obj1) {
+				obj3[attrname] = obj1[attrname];
+			}
+			for (var attrname in obj2) {
+				obj3[attrname] = obj2[attrname];
+			}
 			return obj3;
 		},
 		/**
@@ -123,19 +249,19 @@ angular.module('myApp.helper', [])
 		 * @author Festum
 		 * @date 130911
 		 */
-		mergeRecursive: function () {
+		mergeRecursive: function() {
 			// _mergeRecursive does the actual job with two arguments.
-			var _mergeRecursive = function (dst, src) {
-				if (isDOMNode(src) || typeof src!=='object' || src===null) {
+			var _mergeRecursive = function(dst, src) {
+				if (isDOMNode(src) || typeof src !== 'object' || src === null) {
 					return dst;
 				}
-				for ( var p in src ) {
-					if( !src.hasOwnProperty(p) ) continue;
-					if ( src[p]===undefined ) continue;
-					if ( typeof src[p]!=='object' || src[p]===null) {
+				for (var p in src) {
+					if (!src.hasOwnProperty(p)) continue;
+					if (src[p] === undefined) continue;
+					if (typeof src[p] !== 'object' || src[p] === null) {
 						dst[p] = src[p];
-					} else if ( typeof dst[p]!=='object' || dst[p]===null ) {
-						dst[p] = _mergeRecursive(src[p].constructor===Array ? [] : {}, src[p]);
+					} else if (typeof dst[p] !== 'object' || dst[p] === null) {
+						dst[p] = _mergeRecursive(src[p].constructor === Array ? [] : {}, src[p]);
 					} else {
 						_mergeRecursive(dst[p], src[p]);
 					}
@@ -145,8 +271,8 @@ angular.module('myApp.helper', [])
 
 			// Loop through arguments and merge them into the first argument.
 			var out = arguments[0];
-			if ( typeof out!=='object' || out===null) return out;
-			for ( var i=1, il=arguments.length; i<il; i++ ) {
+			if (typeof out !== 'object' || out === null) return out;
+			for (var i = 1, il = arguments.length; i < il; i++) {
 				_mergeRecursive(out, arguments[i]);
 			}
 			return out;
@@ -160,7 +286,7 @@ angular.module('myApp.helper', [])
 		 * @date 130911
 		 */
 		arraySearch: function(arr, val) {
-			for (var i=0; i<arr.length; i++)
+			for (var i = 0; i < arr.length; i++)
 				if (arr[i] == val) return i;
 			return false;
 		},
@@ -191,9 +317,9 @@ angular.module('myApp.helper', [])
 			var lastName = arguments.length === 3 ? names.pop() : false;
 			// Walk the hierarchy, creating new objects where needed.
 			// If the lastName was removed, then the last object is not set yet:
-			for(var i = 0; i < names.length; i++) base = base[names[i]] = base[names[i]] || {};
+			for (var i = 0; i < names.length; i++) base = base[names[i]] = base[names[i]] || {};
 			// If a value was given, set it to the last name:
-			if(lastName) base = base[lastName] = value;
+			if (lastName) base = base[lastName] = value;
 			// Return the last object in the hierarchy:
 			return base;
 		},
@@ -214,7 +340,7 @@ angular.module('myApp.helper', [])
 		 * @author Festum
 		 * @date 140108
 		 */
-		renameProperty: function (obj, oldName, newName) {
+		renameProperty: function(obj, oldName, newName) {
 			// Check for the old property name to avoid a ReferenceError in strict mode.
 			if (obj.hasOwnProperty(oldName)) {
 				obj[newName] = obj[oldName];
@@ -240,7 +366,7 @@ angular.module('myApp.helper', [])
 		 * @date 140109
 		 */
 		removeProperty: function(obj, name, value) {
-			var array = $.map(obj, function(v,i){
+			var array = $.map(obj, function(v, i) {
 				return v[name] === value ? null : v;
 			});
 			obj.length = 0; //clear original array
@@ -282,31 +408,31 @@ angular.module('myApp.helper', [])
  * @author Festum
  * @date 131015
  */
-.factory('stringHandler', function (jsonRoom) {
+.factory('stringHandler', function(jsonRoom) {
 	return {
-		getFilename: function (fobj) {
+		getFilename: function(fobj) {
 			return fobj.name.substring(fobj.name.lastIndexOf('/') + 1);
 		},
 		/*getFullPath: function (fobj) {
 			console.log(fobj);
 			return (fobj.parent+'/'+fobj.name).replace(/\/+/g, '/');
 		}, no parent now*/
-		makeFullpath: function (path, name) {
-			return (path+'/'+name).replace(/\/+/g, '/');
+		makeFullpath: function(path, name) {
+			return (path + '/' + name).replace(/\/+/g, '/');
 		},
 		capitalise: function(string) {
 			return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 		},
-		fileExtension: function(filename){
+		fileExtension: function(filename) {
 			return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
 		},
 		addHours: function(date, hours) {
-			return new Date(date.getTime() + hours*60*60000);
+			return new Date(date.getTime() + hours * 60 * 60000);
 		},
 		pathSlasher: function(path) {
-			if(path===undefined) path=jsonRoom.get('ufsPath');
-			path=path.replace(/\|/g, '/');
-			return path!='/'?('/'+path+'/').replace(/\/+/g, '/'):'/';
+			if (path === undefined) path = jsonRoom.get('ufsPath');
+			path = path.replace(/\|/g, '/');
+			return path != '/' ? ('/' + path + '/').replace(/\/+/g, '/') : '/';
 		},
 	};
 })
@@ -319,7 +445,7 @@ angular.module('myApp.helper', [])
  * @author Festum
  * @date 131127
  */
-.factory('formHandler', function (jsonRoom) {
+.factory('formHandler', function(jsonRoom) {
 	return {
 		/**
 		 * post2url
@@ -338,15 +464,15 @@ angular.module('myApp.helper', [])
 			form.setAttribute("action", path);
 			form.setAttribute("target", target);
 
-			for(var key in params) {
-				if(params.hasOwnProperty(key)) {
+			for (var key in params) {
+				if (params.hasOwnProperty(key)) {
 					var hiddenField = document.createElement("input");
 					hiddenField.setAttribute("type", "hidden");
 					hiddenField.setAttribute("name", key);
 					hiddenField.setAttribute("value", params[key]);
 
 					form.appendChild(hiddenField);
-				 }
+				}
 			}
 			document.body.appendChild(form);
 			form.submit();
@@ -372,7 +498,7 @@ angular.module('myApp.helper', [])
  * M::::::M               M::::::M A:::::A                 A:::::A N::::::N        N::::::N
  * MMMMMMMM               MMMMMMMMAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNN
  */
-.factory('man', function () {
+.factory('man', function() {
 	return {
 		/**
 		 * Error Mananager
@@ -380,9 +506,9 @@ angular.module('myApp.helper', [])
 		 * @author Festum
 		 * @date 131113
 		 */
-		error: function(statuscode){
+		error: function(statuscode) {
 			var message = 'Unknow Error!';
-			switch(statuscode){
+			switch (statuscode) {
 				case 0:
 					message = 'Success but not working properly';
 					break;
@@ -478,14 +604,16 @@ angular.module('myApp.helper', [])
  * @author Festum
  * @date 130829
  */
-.factory('jsonRoom', function () {
+.factory('jsonRoom', function() {
 	return {
-		get: function (key) {
+		get: function(key) {
 			try {
 				if (localStorage.getItem(key)) return JSON.parse(localStorage.getItem(key) || '[]');
-			} catch(e) { return undefined;}
+			} catch (e) {
+				return undefined;
+			}
 		},
-		set: function (key, value) {
+		set: function(key, value) {
 			localStorage.setItem(key, JSON.stringify(value));
 		}
 	};
@@ -518,28 +646,27 @@ angular.module('myApp.helper', [])
  */
 .factory('fileReader', function($q, $log) {
 	var onLoad = function(reader, deferred, scope) {
-		return function () {
-			scope.$apply(function () {
+		return function() {
+			scope.$apply(function() {
 				deferred.resolve(reader.result);
 			});
 		};
 	};
 
-	var onError = function (reader, deferred, scope) {
-		return function () {
-			scope.$apply(function () {
+	var onError = function(reader, deferred, scope) {
+		return function() {
+			scope.$apply(function() {
 				deferred.reject(reader.result);
 			});
 		};
 	};
 
 	var onProgress = function(reader, scope) {
-		return function (event) {
-			scope.$broadcast("fileProgress",
-				{
-					total: event.total,
-					loaded: event.loaded
-				});
+		return function(event) {
+			scope.$broadcast("fileProgress", {
+				total: event.total,
+				loaded: event.loaded
+			});
 		};
 	};
 
@@ -551,7 +678,7 @@ angular.module('myApp.helper', [])
 		return reader;
 	};
 
-	var readAsDataURL = function (file, scope) {
+	var readAsDataURL = function(file, scope) {
 		var deferred = $q.defer();
 
 		var reader = getReader(deferred, scope);
@@ -586,17 +713,17 @@ angular.module('myApp.helper', [])
  */
 .factory('base64', function() {
 	var keyStr = 'ABCDEFGHIJKLMNOP' +
-			'QRSTUVWXYZabcdef' +
-			'ghijklmnopqrstuv' +
-			'wxyz0123456789+/' +
-			'=';
+		'QRSTUVWXYZabcdef' +
+		'ghijklmnopqrstuv' +
+		'wxyz0123456789+/' +
+		'=';
 	return {
-		encode: function (input) {
+		encode: function(input) {
 			var output = "";
 			var chr1, chr2, chr3 = "";
 			var enc1, enc2, enc3, enc4 = "";
 			var i = 0;
-			input=this._utf8_encode(input);
+			input = this._utf8_encode(input);
 
 			do {
 				chr1 = input.charCodeAt(i++);
@@ -615,10 +742,10 @@ angular.module('myApp.helper', [])
 				}
 
 				output = output +
-						keyStr.charAt(enc1) +
-						keyStr.charAt(enc2) +
-						keyStr.charAt(enc3) +
-						keyStr.charAt(enc4);
+					keyStr.charAt(enc1) +
+					keyStr.charAt(enc2) +
+					keyStr.charAt(enc3) +
+					keyStr.charAt(enc4);
 				chr1 = chr2 = chr3 = "";
 				enc1 = enc2 = enc3 = enc4 = "";
 			} while (i < input.length);
@@ -626,7 +753,7 @@ angular.module('myApp.helper', [])
 			return output;
 		},
 
-		decode: function (input) {
+		decode: function(input) {
 			var output = "";
 			var chr1, chr2, chr3 = "";
 			var enc1, enc2, enc3, enc4 = "";
@@ -636,8 +763,8 @@ angular.module('myApp.helper', [])
 			var base64test = /[^A-Za-z0-9\+\/\=]/g;
 			if (base64test.exec(input)) {
 				alert("There were invalid base64 characters in the input text.\n" +
-						"Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-						"Expect errors in decoding.");
+					"Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
+					"Expect errors in decoding.");
 			}
 			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
@@ -662,7 +789,7 @@ angular.module('myApp.helper', [])
 				enc1 = enc2 = enc3 = enc4 = "";
 
 			} while (i < input.length);
-			output=this._utf8_decode(output);
+			output = this._utf8_decode(output);
 			return output;
 		},
 
@@ -673,10 +800,10 @@ angular.module('myApp.helper', [])
 				var c = string.charCodeAt(n);
 				if (c < 128) {
 					utftext += String.fromCharCode(c);
-				}else if ((c > 127) && (c < 2048)) {
+				} else if ((c > 127) && (c < 2048)) {
 					utftext += String.fromCharCode((c >> 6) | 192);
 					utftext += String.fromCharCode((c & 63) | 128);
-				}else {
+				} else {
 					utftext += String.fromCharCode((c >> 12) | 224);
 					utftext += String.fromCharCode(((c >> 6) & 63) | 128);
 					utftext += String.fromCharCode((c & 63) | 128);
@@ -687,17 +814,20 @@ angular.module('myApp.helper', [])
 
 		_utf8_decode: function(utftext) {
 			var string = "";
-			var i = 0, c = 0, c1 = 0, c2 = 0;
+			var i = 0,
+				c = 0,
+				c1 = 0,
+				c2 = 0;
 			while (i < utftext.length) {
 				c = utftext.charCodeAt(i);
 				if (c < 128) {
 					string += String.fromCharCode(c);
 					i++;
-				}else if ((c > 191) && (c < 224)) {
+				} else if ((c > 191) && (c < 224)) {
 					c2 = utftext.charCodeAt(i + 1);
 					string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
 					i += 2;
-				}else {
+				} else {
 					c2 = utftext.charCodeAt(i + 1);
 					c3 = utftext.charCodeAt(i + 2);
 					string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
@@ -741,269 +871,229 @@ angular.module('myApp.helper', [])
  * @author Festum
  * @date 130828
  */
-.factory('keyboardManager', ['$window', '$timeout', function ($window, $timeout) {
-	var keyboardManagerService = {};
+.factory('keyboardManager', ['$window', '$timeout',
+	function($window, $timeout) {
+		var keyboardManagerService = {};
 
-	var defaultOpt = {
-		'type':             'keydown',
-		'propagate':        false,
-		'inputDisabled':    false,
-		'target':           $window.document,
-		'keyCode':          false
-	};
-	// Store all keyboard combination shortcuts
-	keyboardManagerService.keyboardEvent = {};
-	// Add a new keyboard combination shortcut
-	keyboardManagerService.bind = function (label, callback, opt) {
-		var fct, elt, code, k;
-		// Initialize opt object
-		opt   = angular.extend({}, defaultOpt, opt);
-		label = label.toLowerCase();
-		elt   = opt.target;
-		if(typeof opt.target == 'string') elt = document.getElementById(opt.target);
+		var defaultOpt = {
+			'type': 'keydown',
+			'propagate': false,
+			'inputDisabled': false,
+			'target': $window.document,
+			'keyCode': false
+		};
+		// Store all keyboard combination shortcuts
+		keyboardManagerService.keyboardEvent = {};
+		// Add a new keyboard combination shortcut
+		keyboardManagerService.bind = function(label, callback, opt) {
+			var fct, elt, code, k;
+			// Initialize opt object
+			opt = angular.extend({}, defaultOpt, opt);
+			label = label.toLowerCase();
+			elt = opt.target;
+			if (typeof opt.target == 'string') elt = document.getElementById(opt.target);
 
-		fct = function (e) {
-			e = e || $window.event;
+			fct = function(e) {
+				e = e || $window.event;
 
-			// Disable event handler when focus input and textarea
-			if (opt.inputDisabled) {
-				var elt;
-				if (e.target) elt = e.target;
-				else if (e.srcElement) elt = e.srcElement;
-				if (elt.nodeType == 3) elt = elt.parentNode;
-				if (elt.tagName == 'INPUT' || elt.tagName == 'TEXTAREA') return;
-			}
-
-			// Find out which key is pressed
-			if (e.keyCode) code = e.keyCode;
-			else if (e.which) code = e.which;
-			var character = String.fromCharCode(code).toLowerCase();
-
-			if (code == 188) character = ","; // If the user presses , when the type is onkeydown
-			if (code == 190) character = "."; // If the user presses , when the type is onkeydown
-
-			var keys = label.split("+");
-			// Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
-			var kp = 0;
-			// Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
-			var shift_nums = {
-				"`":"~",
-				"1":"!",
-				"2":"@",
-				"3":"#",
-				"4":"$",
-				"5":"%",
-				"6":"^",
-				"7":"&",
-				"8":"*",
-				"9":"(",
-				"0":")",
-				"-":"_",
-				"=":"+",
-				";":":",
-				"'":"\"",
-				",":"<",
-				".":">",
-				"/":"?",
-				"\\":"|"
-			};
-			// Special Keys - and their codes
-			var special_keys = {
-				'esc':27,
-				'escape':27,
-				'tab':9,
-				'space':32,
-				'return':13,
-				'enter':13,
-				'backspace':8,
-
-				'scrolllock':145,
-				'scroll_lock':145,
-				'scroll':145,
-				'capslock':20,
-				'caps_lock':20,
-				'caps':20,
-				'numlock':144,
-				'num_lock':144,
-				'num':144,
-
-				'pause':19,
-				'break':19,
-
-				'insert':45,
-				'home':36,
-				'delete':46,
-				'end':35,
-
-				'pageup':33,
-				'page_up':33,
-				'pu':33,
-
-				'pagedown':34,
-				'page_down':34,
-				'pd':34,
-
-				'left':37,
-				'up':38,
-				'right':39,
-				'down':40,
-
-				'f1':112,
-				'f2':113,
-				'f3':114,
-				'f4':115,
-				'f5':116,
-				'f6':117,
-				'f7':118,
-				'f8':119,
-				'f9':120,
-				'f10':121,
-				'f11':122,
-				'f12':123
-			};
-			// Some modifiers key
-			var modifiers = {
-				shift: {
-					wanted:		false,
-					pressed:	e.shiftKey ? true : false
-				},
-				ctrl : {
-					wanted:		false,
-					pressed:	e.ctrlKey ? true : false
-				},
-				alt  : {
-					wanted:		false,
-					pressed:	e.altKey ? true : false
-				},
-				meta : { //Meta is Mac specific
-					wanted:		false,
-					pressed:	e.metaKey ? true : false
-				}
-			};
-			// Foreach keys in label (split on +)
-			for(var i=0, l=keys.length; k=keys[i],i<l; i++) {
-				switch (k) {
-					case 'ctrl':
-					case 'control':
-						kp++;
-						modifiers.ctrl.wanted = true;
-						break;
-					case 'shift':
-					case 'alt':
-					case 'meta':
-						kp++;
-						modifiers[k].wanted = true;
-						break;
+				// Disable event handler when focus input and textarea
+				if (opt.inputDisabled) {
+					var elt;
+					if (e.target) elt = e.target;
+					else if (e.srcElement) elt = e.srcElement;
+					if (elt.nodeType == 3) elt = elt.parentNode;
+					if (elt.tagName == 'INPUT' || elt.tagName == 'TEXTAREA') return;
 				}
 
-				if (k.length > 1) { // If it is a special key
-					if(special_keys[k] == code) kp++;
-				} else if (opt.keyCode) { // If a specific key is set into the config
-					if (opt.keyCode == code) kp++;
-				} else { // The special keys did not match
-					if(character == k) kp++;
-					else {
-						if(shift_nums[character] && e.shiftKey) { // Stupid Shift key bug created by using lowercase
-							character = shift_nums[character];
-							if(character == k) kp++;
+				// Find out which key is pressed
+				if (e.keyCode) code = e.keyCode;
+				else if (e.which) code = e.which;
+				var character = String.fromCharCode(code).toLowerCase();
+
+				if (code == 188) character = ","; // If the user presses , when the type is onkeydown
+				if (code == 190) character = "."; // If the user presses , when the type is onkeydown
+
+				var keys = label.split("+");
+				// Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
+				var kp = 0;
+				// Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
+				var shift_nums = {
+					"`": "~",
+					"1": "!",
+					"2": "@",
+					"3": "#",
+					"4": "$",
+					"5": "%",
+					"6": "^",
+					"7": "&",
+					"8": "*",
+					"9": "(",
+					"0": ")",
+					"-": "_",
+					"=": "+",
+					";": ":",
+					"'": "\"",
+					",": "<",
+					".": ">",
+					"/": "?",
+					"\\": "|"
+				};
+				// Special Keys - and their codes
+				var special_keys = {
+					'esc': 27,
+					'escape': 27,
+					'tab': 9,
+					'space': 32,
+					'return': 13,
+					'enter': 13,
+					'backspace': 8,
+
+					'scrolllock': 145,
+					'scroll_lock': 145,
+					'scroll': 145,
+					'capslock': 20,
+					'caps_lock': 20,
+					'caps': 20,
+					'numlock': 144,
+					'num_lock': 144,
+					'num': 144,
+
+					'pause': 19,
+					'break': 19,
+
+					'insert': 45,
+					'home': 36,
+					'delete': 46,
+					'end': 35,
+
+					'pageup': 33,
+					'page_up': 33,
+					'pu': 33,
+
+					'pagedown': 34,
+					'page_down': 34,
+					'pd': 34,
+
+					'left': 37,
+					'up': 38,
+					'right': 39,
+					'down': 40,
+
+					'f1': 112,
+					'f2': 113,
+					'f3': 114,
+					'f4': 115,
+					'f5': 116,
+					'f6': 117,
+					'f7': 118,
+					'f8': 119,
+					'f9': 120,
+					'f10': 121,
+					'f11': 122,
+					'f12': 123
+				};
+				// Some modifiers key
+				var modifiers = {
+					shift: {
+						wanted: false,
+						pressed: e.shiftKey ? true : false
+					},
+					ctrl: {
+						wanted: false,
+						pressed: e.ctrlKey ? true : false
+					},
+					alt: {
+						wanted: false,
+						pressed: e.altKey ? true : false
+					},
+					meta: { //Meta is Mac specific
+						wanted: false,
+						pressed: e.metaKey ? true : false
+					}
+				};
+				// Foreach keys in label (split on +)
+				for (var i = 0, l = keys.length; k = keys[i], i < l; i++) {
+					switch (k) {
+						case 'ctrl':
+						case 'control':
+							kp++;
+							modifiers.ctrl.wanted = true;
+							break;
+						case 'shift':
+						case 'alt':
+						case 'meta':
+							kp++;
+							modifiers[k].wanted = true;
+							break;
+					}
+
+					if (k.length > 1) { // If it is a special key
+						if (special_keys[k] == code) kp++;
+					} else if (opt.keyCode) { // If a specific key is set into the config
+						if (opt.keyCode == code) kp++;
+					} else { // The special keys did not match
+						if (character == k) kp++;
+						else {
+							if (shift_nums[character] && e.shiftKey) { // Stupid Shift key bug created by using lowercase
+								character = shift_nums[character];
+								if (character == k) kp++;
+							}
 						}
 					}
 				}
-			}
 
-			if(kp == keys.length &&
-				modifiers.ctrl.pressed == modifiers.ctrl.wanted &&
-				modifiers.shift.pressed == modifiers.shift.wanted &&
-				modifiers.alt.pressed == modifiers.alt.wanted &&
-				modifiers.meta.pressed == modifiers.meta.wanted) {
+				if (kp == keys.length &&
+					modifiers.ctrl.pressed == modifiers.ctrl.wanted &&
+					modifiers.shift.pressed == modifiers.shift.wanted &&
+					modifiers.alt.pressed == modifiers.alt.wanted &&
+					modifiers.meta.pressed == modifiers.meta.wanted) {
 					$timeout(function() {
 						callback(e);
 					}, 1);
 
-				if(!opt.propagate) { // Stop the event
-					// e.cancelBubble is supported by IE - this will kill the bubbling process.
-					e.cancelBubble = true;
-					e.returnValue = false;
+					if (!opt.propagate) { // Stop the event
+						// e.cancelBubble is supported by IE - this will kill the bubbling process.
+						e.cancelBubble = true;
+						e.returnValue = false;
 
-					// e.stopPropagation works in Firefox.
-					if (e.stopPropagation) {
-						e.stopPropagation();
-						e.preventDefault();
+						// e.stopPropagation works in Firefox.
+						if (e.stopPropagation) {
+							e.stopPropagation();
+							e.preventDefault();
+						}
+						return false;
 					}
-					return false;
 				}
-			}
 
+			};
+			// Store shortcut
+			keyboardManagerService.keyboardEvent[label] = {
+				'callback': fct,
+				'target': elt,
+				'event': opt.type
+			};
+			//Attach the function with the event
+			if (elt.addEventListener) elt.addEventListener(opt.type, fct, false);
+			else if (elt.attachEvent) elt.attachEvent('on' + opt.type, fct);
+			else elt['on' + opt.type] = fct;
 		};
-		// Store shortcut
-		keyboardManagerService.keyboardEvent[label] = {
-			'callback':	fct,
-			'target':	elt,
-			'event':	opt.type
+		// Remove the shortcut - just specify the shortcut and I will remove the binding
+		keyboardManagerService.unbind = function(label) {
+			label = label.toLowerCase();
+			var binding = keyboardManagerService.keyboardEvent[label];
+			delete(keyboardManagerService.keyboardEvent[label]);
+			if (!binding) return;
+			var type = binding.event,
+				elt = binding.target,
+				callback = binding.callback;
+			if (elt.detachEvent) elt.detachEvent('on' + type, callback);
+			else if (elt.removeEventListener) elt.removeEventListener(type, callback, false);
+			else elt['on' + type] = false;
 		};
-		//Attach the function with the event
-		if(elt.addEventListener) elt.addEventListener(opt.type, fct, false);
-		else if(elt.attachEvent) elt.attachEvent('on' + opt.type, fct);
-		else elt['on' + opt.type] = fct;
-	};
-	// Remove the shortcut - just specify the shortcut and I will remove the binding
-	keyboardManagerService.unbind = function (label) {
-		label = label.toLowerCase();
-		var binding = keyboardManagerService.keyboardEvent[label];
-		delete(keyboardManagerService.keyboardEvent[label]);
-		if(!binding) return;
-		var type	= binding.event,
-		elt			= binding.target,
-		callback	= binding.callback;
-		if(elt.detachEvent) elt.detachEvent('on' + type, callback);
-		else if(elt.removeEventListener) elt.removeEventListener(type, callback, false);
-		else elt['on'+type] = false;
-	};
-	return keyboardManagerService;
-}])
+		return keyboardManagerService;
+	}
+])
 
-/*
- *                                                                                           dddddddd
- * BBBBBBBBBBBBBBBBB                                                                         d::::::d
- * B::::::::::::::::B                                                                        d::::::d
- * B::::::BBBBBB:::::B                                                                       d::::::d
- * BB:::::B     B:::::B                                                                      d:::::d
- *   B::::B     B:::::Brrrrr   rrrrrrrrr       eeeeeeeeeeee      aaaaaaaaaaaaa       ddddddddd:::::d
- *   B::::B     B:::::Br::::rrr:::::::::r    ee::::::::::::ee    a::::::::::::a    dd::::::::::::::d
- *   B::::BBBBBB:::::B r:::::::::::::::::r  e::::::eeeee:::::ee  aaaaaaaaa:::::a  d::::::::::::::::d
- *   B:::::::::::::BB  rr::::::rrrrr::::::re::::::e     e:::::e           a::::a d:::::::ddddd:::::d
- *   B::::BBBBBB:::::B  r:::::r     r:::::re:::::::eeeee::::::e    aaaaaaa:::::a d::::::d    d:::::d
- *   B::::B     B:::::B r:::::r     rrrrrrre:::::::::::::::::e   aa::::::::::::a d:::::d     d:::::d
- *   B::::B     B:::::B r:::::r            e::::::eeeeeeeeeee   a::::aaaa::::::a d:::::d     d:::::d
- *   B::::B     B:::::B r:::::r            e:::::::e           a::::a    a:::::a d:::::d     d:::::d
- * BB:::::BBBBBB::::::B r:::::r            e::::::::e          a::::a    a:::::a d::::::ddddd::::::dd
- * B:::::::::::::::::B  r:::::r             e::::::::eeeeeeee  a:::::aaaa::::::a  d:::::::::::::::::d
- * B::::::::::::::::B   r:::::r              ee:::::::::::::e   a::::::::::aa:::a  d:::::::::ddd::::d
- * BBBBBBBBBBBBBBBBB    rrrrrrr                eeeeeeeeeeeeee    aaaaaaaaaa  aaaa   ddddddddd   ddddd
- */
-/**
- * Breadcrumbs
- * @author Festum
- * @date 131103
- */
-.factory('breadcrumbs', function() {
-	var breadcrumbs = [];
-	var breadcrumbsService = {};
-
-	breadcrumbsService.set = function(urls) {
-		breadcrumbs = urls;
-	};
-
-	breadcrumbsService.getAll = function() {
-		return breadcrumbs;
-	};
-
-	breadcrumbsService.getFirst = function() {
-		return breadcrumbs[0] || {};
-	};
-
-	return breadcrumbsService;
-})
 
 
 ;

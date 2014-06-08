@@ -1,8 +1,7 @@
-angular.module('myApp.controllers').controller('LoginCtrl', function($scope, $log) {
+angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log','AuthService', function($scope, $log,$AuthService) {
   $log.log('load login page');
 
-
-});
+}]);
 
 angular.module('myApp.controllers').controller('LoginCtrl', function($scope, $log) {
   $log.log('load home page');
