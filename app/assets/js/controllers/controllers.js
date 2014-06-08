@@ -10,6 +10,7 @@ angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log', '
       credentials.pwd = '123456789';
 
       AuthService.login(credentials);
+
   }
 
 }]);
