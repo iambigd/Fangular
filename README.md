@@ -11,7 +11,7 @@ To get you started you can simply clone the angular-seed repository and install 
 Clone the Fangular repository using [git][git]:
 
 ```
-git clone https://github.com/Festum/Fangular.git
+git clone https://github.com/iambigd/Fangular.git
 cd Fangular
 ```
 
