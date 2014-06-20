@@ -11,7 +11,7 @@ To get you started you can simply clone the angular-seed repository and install 
 Clone the Fangular repository using [git][git]:
 
 ```
-git clone https://github.com/Festum/Fangular.git
+git clone https://github.com/iambigd/Fangular.git
 cd Fangular
 ```
 
@@ -33,9 +33,9 @@ Behind the scenes this will also call `bower install`.  You should find that you
 folders in your project.
 
 * `node_modules` - contains the npm packages for the tools we need
-* `app/lib` - contains the angular framework files
+* `app/libs` - contains the angular framework files
 
-*Note that the `lib` folder would normally be installed in the root folder but
+*Note that the `libs` folder would normally be installed in the root folder but
 angular-seed changes this location through the `.bowerrc` file.  Putting it in the app folder makes
 it easier to serve the files by a webserver.*
 
@@ -62,8 +62,7 @@ Now browse to the app at `http://localhost:8000/app/index.html`.
       index.html           --> app layout file (the main html template file of the app)(async)
         js/                --> javascript files
           controllers/     --> controller files
-            conf.js        --> demo view controller
-            main.js        --> demo view controller
+            controllers.js --> demo view controller
           core/            --> application controllers
             init.js        --> initiator
             app.js         --> application
