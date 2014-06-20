@@ -1,9 +1,9 @@
 {
 	"name": "Fangular",
 	"description": "An angular spaghetti seed",
-	"homepage": "https://github.com/Festum/Fangular",
+	"homepage": "https://github.com/iambigd/Fangular",
 	"license": "MIT",
-	"version": "0.0.2",
+	"version": "0.0.1",
 	"private": false,
 	"main":[
 		"app"
@@ -29,6 +29,7 @@
 		"angular-bootstrap": "^0.10.0",
 		"angular-ui-utils": "~0.1",
 		"angular-ui-router": "~0.2",
+		"angular-cookies": "^1.2",
 		"bootstrap": "^3"
 	},
 	"devDependencies": {

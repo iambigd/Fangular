@@ -17,7 +17,7 @@ head.load(
 	'assets/js/i18n/zh_TW.js',
 	'assets/js/services/helper.js',
 	'assets/js/filters/interpolate.js',
-	'assets/js/directives/ver.js',
+	'assets/js/directives/directives.js',
 	'assets/js/controllers/controllers.js',
 	function() {
 		head.load(

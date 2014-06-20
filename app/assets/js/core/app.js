@@ -81,7 +81,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 			.state('anon.login', {
 				url: '/login',
 				templateUrl: 'partials/login.html',
-				controller: 'LoginCtrl'
+				controller: 'LoginCtrl',
+				data: {
+			        pageTitle: 'login'
+			    }
 			})
 
 		// Public routes
@@ -97,7 +100,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 			})
 			.state('public.404', {
 				url: '/404',
-				templateUrl: 'partials/404.html'
+				templateUrl: 'partials/404.html',
+				data: {
+			        pageTitle: '404'
+			      }
 			})
 
 		//Multiple Named Views
@@ -132,7 +138,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 					templateUrl: 'partials/global.footer.html'
 				}
 
-			}
+			},
+
+			data: {
+		        pageTitle: 'Home'
+		     }
 		})
 
 
@@ -167,7 +177,11 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 					templateUrl: 'partials/global.footer.html'
 				}
 
-			}
+			},
+
+			data: {
+		    	pageTitle: 'Shopping List'
+		    }
 		})
 
 
@@ -185,7 +199,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 		.state('public.conf', {
 			url: '/conf',
 			templateUrl: 'partials/conf.html',
-			controller: 'ConfCtrl'
+			controller: 'ConfCtrl',
+			data: {
+		        pageTitle: 'Config '
+		     }
 		});
 
 
