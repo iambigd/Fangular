@@ -115,7 +115,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 				// the main template will be placed here (relatively named)
 				// replace unnamed view '<div ui-view></div>'  in this state's parent state, 'home'.
 				'': {
-					templateUrl: 'partials/home/home.html'
+					templateUrl: 'partials/global.index.html'
 				},
 
 				//viewname@statusname
@@ -154,7 +154,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 				// the main template will be placed here (relatively named)
 				// replace unnamed view '<div ui-view></div>'  in this state's parent state, 'home'.
 				'': {
-					templateUrl: 'partials/shopping/shopping.html'
+					templateUrl: 'partials/global.index.html'
 				},
 
 				//viewname@statusname

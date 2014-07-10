@@ -30,7 +30,11 @@
 		"angular-ui-utils": "~0.1",
 		"angular-ui-router": "~0.2",
 		"angular-cookies": "^1.2",
-		"bootstrap": "^3"
+		"bootstrap": "^3",
+
+		"angular-logging": "^v0.0.6",
+		"angular-dialog-service": "^v5.0.0",
+		"angular-block-ui": "0.0.8"
 	},
 	"devDependencies": {
 		"angular-cookies": "^1.2",
