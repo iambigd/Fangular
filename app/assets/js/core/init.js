@@ -15,7 +15,7 @@ head.load(
 	'assets/js/core/struct.js',
 	'assets/js/i18n/en_US.js',
 	'assets/js/i18n/zh_TW.js',
-	'assets/js/services/helper.js',
+	'assets/js/services/services.js',
 	'assets/js/filters/interpolate.js',
 	'assets/js/directives/directives.js',
 	'assets/js/controllers/controllers.js',

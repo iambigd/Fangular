@@ -29,17 +29,19 @@ angular.module('myApp.helper', [])
 		login: function(credentials,success,error) {
 
 			//build api endpoint
-			var apiEndpoint = ServerConfig.endpoint + 'auth/login', credentials;
-			$log.log('call login api:' + apiEndpoint);
-			$log.log(credentials);
+			// var apiEndpoint = ServerConfig.endpoint + 'auth/login', credentials;
+			// $log.log('call login api:' + apiEndpoint);
+			// $log.log(credentials);
 
-			return $http
-				.post(apiEndpoint)
-				.success(function(res) {
-					$log.log('resposne');
-					$log.log(res);
-					Session.create(res.id, res.userid, res.role);
-				}).error(error);
+			// return $http
+			// 	.post(apiEndpoint)
+			// 	.success(function(res) {
+			// 		$log.log('resposne');
+			// 		$log.log(res);
+			// 		Session.create(res.id, res.userid, res.role);
+			// 	}).error(error);
+
+
 		},
 
 		logout: function(){

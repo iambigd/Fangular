@@ -4,11 +4,12 @@ var app, deps;
 
 deps = [
 	// 'ngRoute',
+
 	'ui.router', //use new ui-roter framework
 	'ngResource',
 	'ngAnimate',
+
 	'myApp.filters',
-	'myApp.helper',
 	'myApp.services',
 	'myApp.directives',
 	'myApp.controllers'
