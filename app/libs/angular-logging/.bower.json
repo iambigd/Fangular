@@ -1,0 +1,48 @@
+{
+  "name": "angular-logging",
+  "version": "0.0.6",
+  "description": "angular lib for logging, wraps $log and allows logging thresholds and categories via a simple config",
+  "keywords": [
+    "angular",
+    "log",
+    "logging",
+    "log4j",
+    "javascript",
+    "threshold",
+    "$log"
+  ],
+  "main": "dist/angular-logging.min.js",
+  "authors": [
+    {
+      "name": "Aron Vaughan",
+      "homepage": "http://www.aronvaughan.com"
+    }
+  ],
+  "licenses": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aronvaughan/angular-logging.git"
+  },
+  "ignore": [
+    "bower_components",
+    "node_modules",
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular": "latest"
+  },
+  "devDependencies": {
+    "angular": "latest",
+    "angular-mocks": "latest"
+  },
+  "homepage": "https://github.com/aronvaughan/angular-logging",
+  "_release": "0.0.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.6",
+    "commit": "57696f98c4337fbe51333d20640243427026469c"
+  },
+  "_source": "git://github.com/aronvaughan/angular-logging.git",
+  "_target": "^v0.0.6",
+  "_originalSource": "angular-logging"
+}
