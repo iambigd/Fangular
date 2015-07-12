@@ -1,8 +1,11 @@
 head.load(
-	'libs/bootstrap/dist/css/bootstrap.min.css',
-	'libs/bootstrap/dist/css/bootstrap-theme.min.css',
-	'assets/css/app.css',
-	// 'assets/css/demo.css',
+	//3rd css
+    'libs/bootstrap/dist/css/bootstrap.min.css',
+    'libs/bootstrap/dist/css/bootstrap-theme.min.css',
+    'libs/font-awesome/css/font-awesome.min.css',
+
+	'assets/css/animation.min.css', //animation css style
+    'assets/css/app.css', //app
 
 	'libs/angular/angular.min.js',
 	'libs/angular-loader/angular-loader.min.js',
@@ -20,13 +23,17 @@ head.load(
 	'assets/js/i18n/en_US.js',
 	'assets/js/i18n/zh_TW.js',
 
-	'assets/js/services/services.js',//common services
-	'assets/js/services/authServices.js',//authentication
+	//common services,filters,directives,controllers
+	'assets/js/services/services.js',
 	'assets/js/services/helper.js',//Optional by festurm
-
 	'assets/js/filters/filters.js',
 	'assets/js/directives/directives.js',
 	'assets/js/controllers/controllers.js',
+
+
+	'assets/js/services/authServices.js',//authentication
+
+
 	function() {
 		head.load(
 			'assets/js/core/app.js'

@@ -6,10 +6,15 @@ deps = [
 	// 'ngRoute',
 
 	//3rd module
+	'ui.bootstrap',
 	'ui.router', //use new ui-roter framework
 	'ngResource',
 	'ngAnimate',
 
+	//i18n support
+	'pascalprecht.translate',
+
+	//commom modules
 	'myApp.filters',
 	'myApp.services',
 	'myApp.helper',
@@ -17,6 +22,7 @@ deps = [
 	'myApp.controllers'
 ];
 
+//myApp模組可使用的相關相依模組
 app = angular.module('myApp', deps);
 
 app.run(['$rootScope', '$log', '$state', '$stateParams', 'AuthService', 'AUTH_EVENTS', 'USER_ROLES',
