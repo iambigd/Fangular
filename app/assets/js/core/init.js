@@ -16,6 +16,7 @@ head.load(
 	'libs/angular-bootstrap/ui-bootstrap-tpls.min.js',
 	'libs/angular-ui-utils/ui-utils.min.js',
 	'libs/angular-ui-router/release/angular-ui-router.min.js',
+	'libs/angular-logging/src/angular-logging.js', //like log4j
 
 	'assets/js/core/struct.js',
 

@@ -12,7 +12,8 @@ deps = [
 	'ngAnimate',
 
 	//i18n support
-	'pascalprecht.translate',
+	'pascalprecht.translate',//註解掉會爆
+	'avaughan.logging',
 
 	//commom modules
 	'myApp.filters',
