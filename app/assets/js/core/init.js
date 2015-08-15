@@ -17,6 +17,7 @@ head.load(
 	'libs/angular-bootstrap/ui-bootstrap-tpls.min.js',
 	'libs/angular-ui-utils/ui-utils.min.js',
 	'libs/angular-ui-router/release/angular-ui-router.min.js',
+<<<<<<< HEAD
 	//like log4j
 	'libs/angular-logging/src/angular-logging.js',
 	//google map
@@ -24,6 +25,8 @@ head.load(
 	//side menu
 	// 'libs/eeh-navigation/dist/eeh-navigation.js',
 	// 'libs/eeh-navigation/dist/eeh-navigation.tpl.js',
+=======
+>>>>>>> parent of bdf11c4... 修正載入struc.js/新增animation.css
 
 	'assets/js/core/struct.js',
 

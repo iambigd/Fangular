@@ -17,8 +17,12 @@ deps = [
 	// 'eehNavigation',
 
 	//i18n support
+<<<<<<< HEAD
 	'pascalprecht.translate',//註解掉會爆
 
+=======
+	'pascalprecht.translate',
+>>>>>>> parent of bdf11c4... 修正載入struc.js/新增animation.css
 
 	//commom modules
 	'myApp.filters',
