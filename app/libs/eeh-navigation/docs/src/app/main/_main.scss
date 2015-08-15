@@ -1,0 +1,75 @@
+@import "../variables";
+
+header {
+    .jumbotron {
+        background-color: $brand-primary;
+        margin-bottom: 0;
+
+        svg {
+            height: 160px;
+
+            g {
+                fill: $logo-fill;
+            }
+        }
+
+        h1 {
+            a:focus,
+            a:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .project-details {
+        margin: 0;
+        padding: 15px 0 !important;
+        background: #f5f5f5;
+
+        li {
+            padding: 0;
+        }
+
+        li + li::before {
+            content: "\2002\00b7\2002";
+        }
+    }
+}
+
+main {
+    padding: 30px 0;
+    background-color: #FFFFFF;
+
+    .jumbo-nav-icons {
+        padding: 2em 0;
+        a:hover {
+            text-decoration: none;
+        }
+    }
+
+    .container {
+        max-width: 760px;
+    }
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+footer {
+    padding: 50px 0;
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    opacity: 0.6;
+    transition: opacity .2s ease;
+
+    &:hover {
+        opacity: 1.0;
+        transition: opacity .2s ease;
+    }
+    p {
+        margin: 0;
+    }
+}
+

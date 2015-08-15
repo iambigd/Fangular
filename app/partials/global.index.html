@@ -2,10 +2,44 @@
 <html lang="en"><head>
 	<script src='//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js'></script>
 	<script src='assets/js/modules/head.min.js' data-headjs-load='assets/js/core/init.js'></script>
-	<title update-page-title>Fangular</title>
+	<title update-page-title></title>
 </head>
 <body class="ng-cloak">
+<!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Start Bootstrap
+                    </a>
+                </li>
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li>
+                    <a href="#">Shortcuts</a>
+                </li>
+                <li>
+                    <a href="#">Overview</a>
+                </li>
+                <li>
+                    <a href="#">Events</a>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
 <div ui-view="header"></div>
+
 <div ui-view="main_body"></div>
 <div ui-view="footer"></div>
 </body>

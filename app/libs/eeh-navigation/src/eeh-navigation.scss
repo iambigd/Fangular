@@ -1,0 +1,18 @@
+@import "variables";
+@import "navbar/navbar";
+@import "sidebar/sidebar";
+@import "sidebar/transcluded-wrapper";
+@import "search-input/search-input";
+
+.eeh-navigation {
+  margin-bottom: 0;
+
+  a {
+    cursor: pointer;
+  }
+
+  .icon-fw {
+    width: 1.28571429em;
+    text-align: center;
+  }
+}

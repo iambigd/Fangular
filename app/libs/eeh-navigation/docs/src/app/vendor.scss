@@ -1,0 +1,28 @@
+@import "variables";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+$icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
+
+/* Do not remove this comments below. It's the markers used by wiredep to inject
+   sass dependencies when defined in the bower.json of your dependencies */
+// bower:scss
+// endbower
+
+.variables-matrix {
+    @extend .table;
+    @extend .table-bordered;
+}
+
+.type-hint {
+    &.type-hint-string {
+        @extend .label-info;
+    }
+    &.type-hint-number {
+        @extend .label-danger;
+    }
+    &.type-hint-boolean {
+        @extend .label-success;
+    }
+    &.type-hint-function {
+        @extend .label-warning;
+    }
+}
