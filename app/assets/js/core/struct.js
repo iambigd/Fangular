@@ -1,6 +1,8 @@
 'use strict';
 
+
 angular.module('myApp.controllers', [
+	//move to app.js
 	// 'myApp.helper',
 	// 'myApp.directives',
 	// 'myApp.services',

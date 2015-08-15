@@ -1,43 +1,60 @@
+angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log', 'AuthService', '$location',
+  function($scope, $log, AuthService, $location) {
+  $log.log('load login page');
 
-/***
- *     /$$   /$$ /$$$$$$$$  /$$$$$$  /$$$$$$$  /$$$$$$$$ /$$$$$$$
- *    | $$  | $$| $$_____/ /$$__  $$| $$__  $$| $$_____/| $$__  $$
- *    | $$  | $$| $$      | $$  \ $$| $$  \ $$| $$      | $$  \ $$
- *    | $$$$$$$$| $$$$$   | $$$$$$$$| $$  | $$| $$$$$   | $$$$$$$/
- *    | $$__  $$| $$__/   | $$__  $$| $$  | $$| $$__/   | $$__  $$
- *    | $$  | $$| $$      | $$  | $$| $$  | $$| $$      | $$  \ $$
- *    | $$  | $$| $$$$$$$$| $$  | $$| $$$$$$$/| $$$$$$$$| $$  | $$
- *    |__/  |__/|________/|__/  |__/|_______/ |________/|__/  |__/
- *
- *
- */
-angular.module('myApp.controllers').controller('HeaderCtrl', ['$rootScope' ,'$scope', 'avLog', 'AuthService', 'Session', '$location',
-  function($rootScope, $scope, avLog, AuthService, Session, $location) {
+  $scope.login = function(credentials){
+      $log.log('user login');
+      $log.log(credentials);
 
-    var logger = avLog.getLogger('HeaderCtrl');
+      // credentials = {};
+      // credentials.account = 'oyster';
+      // credentials.pwd = '123456789';
 
-    logger.info('load header page');
-
-    $scope.openSideMenu = function(){
-      logger.debug('open side menu');
-
-    }
-    // $scope.currUser = Session.getSessionUser();
-    // $log.log($scope.currUser);
-
-    // $scope.logout = function() {
-    //   logger.debug('press logout button');
-    //   AuthService.logout(
-    //     function(data, status, headers, config) {
-    //       $location.path('/login');
-
-    //     }, function(data, status, headers, config) {
-    //       logger.error('fail to logout');
-    //     });
-    // };
-
+      AuthService.login(credentials);
+      $location.path("home");
   }
-]);
+
+}]);
+
+
+angular.module('myApp.controllers').controller('HomeCtrl', function($scope, $log) {
+  $log.log('load home page');
+
+});
+
+angular.module('myApp.controllers').controller('ShoppingCtrl', function($scope, $log, $http) {
+  $log.log('load list page');
+
+  $scope.shoppingList = [{
+    name: 'Milk'
+  }, {
+    name: 'Eggs'
+  }, {
+    name: 'Bread'
+  }, {
+    name: 'Cheese'
+  }, {
+    name: 'Ham'
+  }];
+
+  $scope.selectItem = function(selectedItem) {
+    $log.log(selectedItem);
+
+
+    var indexOfShopping = 0;
+    var lenOfShopping = $scope.shoppingList.length;
+    for (indexOfShopping; indexOfShopping < lenOfShopping; indexOfShopping++) {
+      var item = $scope.shoppingList[indexOfShopping];
+      $log.log(item);
+      item.selected = false; //reset active item
+      if (selectedItem === item) {
+        selectedItem.selected = true;
+      }
+    }
+
+  };
+
+});
 
 angular.module('myApp.controllers').controller('ConfCtrl', function($scope, $log) {
 

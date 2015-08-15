@@ -10,19 +10,10 @@ deps = [
 	'ui.router', //use new ui-roter framework
 	'ngResource',
 	'ngAnimate',
-	'ngMap',
-	'avaughan.logging',
-	'blockUI',
-
-	// 'eehNavigation',
 
 	//i18n support
-<<<<<<< HEAD
 	'pascalprecht.translate',//註解掉會爆
-
-=======
-	'pascalprecht.translate',
->>>>>>> parent of bdf11c4... 修正載入struc.js/新增animation.css
+	'avaughan.logging',
 
 	//commom modules
 	'myApp.filters',
@@ -142,8 +133,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 				// the child views will be defined here (absolutely named)
 
 				'header@public.home': {
-					templateUrl: 'partials/global.header.html',
-					controller: 'HeaderCtrl'
+					templateUrl: 'partials/global.header.html'
+
 				},
 
 				'main_body@public.home': {
@@ -162,6 +153,56 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 			data: {
 		        pageTitle: 'Home'
 		     }
+		})
+
+
+		.state('public.shopping', {
+			url: '/shopping',
+
+			views: {
+
+				// the main template will be placed here (relatively named)
+				// replace unnamed view '<div ui-view></div>'  in this state's parent state, 'home'.
+				'': {
+					templateUrl: 'partials/global.index.html'
+				},
+
+				//viewname@statusname
+
+				// the child views will be defined here (absolutely named)
+
+				'header@public.shopping': {
+					templateUrl: 'partials/global.header.html'
+
+				},
+
+				'main_body@public.shopping': {
+
+					templateUrl: 'partials/shopping/shopping.body.html',
+					controller: 'ShoppingCtrl'
+				},
+
+				// for column two, we'll define a separate controller
+				'footer@public.shopping': {
+					templateUrl: 'partials/global.footer.html'
+				}
+
+			},
+
+			data: {
+		    	pageTitle: 'Shopping List'
+		    }
+		})
+
+
+		//nested view from parent status 'public.shopping'
+		.state('public.shopping.item', {
+			url: '/:item',
+			templateUrl: 'partials/shopping/shopping.item.html',
+
+			controller: function($scope, $stateParams) {
+				$scope.item = $stateParams.item;
+			}
 		})
 
 		//conf page does not include header/footer views
