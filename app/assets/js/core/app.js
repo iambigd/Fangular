@@ -5,15 +5,18 @@ var app, deps;
 deps = [
 	// 'ngRoute',
 
-	//3rd module
+
+
+	'pascalprecht.translate',////i18n support,註解掉會爆
 	'ui.bootstrap',
 	'ui.router', //use new ui-roter framework
 	'ngResource',
 	'ngAnimate',
 
-	//i18n support
-	'pascalprecht.translate',//註解掉會爆
 	'avaughan.logging',
+
+	//3rd module'
+	'eehNavigation',
 
 	//commom modules
 	'myApp.filters',
@@ -237,6 +240,31 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 
 	}
 ]);
+
+
+app.config(['eehNavigationProvider', function (eehNavigationProvider) {
+
+
+    // Add nested user links to the "foo" menu.
+    eehNavigationProvider
+	    .menuItem('foo.user', {
+	        text: 'Me',
+	        iconClass: 'fa-user'
+	    })
+	    .menuItem('foo.user.profile', {
+	        text: 'User Profile',
+	        iconClass: 'fa-user',
+	        href: '/user-profile'
+	    });
+
+    // Add a menu item that links to "/home" to the "bar" menu.
+    eehNavigationProvider
+	    .menuItem('bar.home', {
+	        text: 'Home',
+	        iconClass: 'fa-home',
+	        href: '/home'
+	    });
+}]);
 
 
 

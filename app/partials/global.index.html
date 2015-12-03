@@ -6,6 +6,11 @@
 </head>
 <body class="ng-cloak">
 <div ui-view="header"></div>
+
+<eeh-navigation-sidebar menu-name="'bar'">
+    <ui-view></ui-view>
+</eeh-navigation-sidebar>
+
 <div ui-view="main_body"></div>
 <div ui-view="footer"></div>
 </body>

@@ -1,22 +1,34 @@
 head.load(
+
+
 	//3rd css
     'libs/bootstrap/dist/css/bootstrap.min.css',
     'libs/bootstrap/dist/css/bootstrap-theme.min.css',
-    'libs/font-awesome/css/font-awesome.min.css',
+    // 'libs/font-awesome/css/font-awesome.min.css',
+    'libs/eeh-navigation/dist/eeh-navigation.css',
 
 	'assets/css/animation.min.css', //animation css style
     'assets/css/app.css', //app
 
-	'libs/angular/angular.min.js',
+
+	// 'libs/angular/angular.min.js',//angular core
+	'libs/angular/angular.js',
+
 	'libs/angular-loader/angular-loader.min.js',
 	'libs/angular-route/angular-route.min.js',
+	'libs/angular-translate/angular-translate.min.js',
 	'libs/angular-resource/angular-resource.min.js',
 	'libs/angular-translate/angular-translate.min.js',
 	'libs/angular-animate/angular-animate.min.js',
 	'libs/angular-bootstrap/ui-bootstrap-tpls.min.js',
 	'libs/angular-ui-utils/ui-utils.min.js',
 	'libs/angular-ui-router/release/angular-ui-router.min.js',
-	'libs/angular-logging/src/angular-logging.js', //like log4j
+
+	//like log4j
+	'libs/angular-logging/src/angular-logging.js',
+	//eeh-navigation
+	'libs/eeh-navigation/dist/eeh-navigation.js',
+	'libs/eeh-navigation/dist/eeh-navigation.tpl.js',
 
 	'assets/js/core/struct.js',
 
