@@ -166,7 +166,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
         })
 
 
-        .state('myNavbar.shopping', {
+        .state('public.shopping', {
             url: '/shopping',
 
             views: {
