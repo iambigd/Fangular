@@ -4,11 +4,10 @@ head.load(
 	//3rd css
     'libs/bootstrap/dist/css/bootstrap.min.css',
     'libs/bootstrap/dist/css/bootstrap-theme.min.css',
-    'libs/font-awesome/css/font-awesome.min.css',
-    // 'libs/eeh-navigation/dist/eeh-navigation.css',
 
+    'assets/css/font-awesome.min.css',
 	'assets/css/animation.min.css', //animation css style
-	 'assets/css/eeh-navigation.css',
+	'assets/css/eeh-navigation.css',
     'assets/css/app.css', //app
 
 

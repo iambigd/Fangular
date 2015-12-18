@@ -32,7 +32,7 @@ app = angular.module('myApp', deps);
 app.run(['$rootScope', 'avLog', '$state', '$stateParams', 'AuthService', 'AUTH_EVENTS', 'USER_ROLES',
     function($rootScope, avLog, $state, $stateParams, AuthService, AUTH_EVENTS, USER_ROLES) {
 
-    	 var logger = avLog.getLogger('app.js');
+        var logger = avLog.getLogger('app.js');
 
         //inoder to active nav item
         // <li ng-class="{active: $state.includes('list')}">
@@ -47,7 +47,7 @@ app.run(['$rootScope', 'avLog', '$state', '$stateParams', 'AuthService', 'AUTH_E
             logger.debug('status change start');
             logger.debug(toState);
 
-             logger.info('status change start: from ' + fromState.name + " to " + toState.name);
+            logger.info('status change start: from ' + fromState.name + " to " + toState.name);
             // logger.debug(toState);
 
             //目前頁面支援的權限
@@ -250,6 +250,30 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
 ]);
 
 
+/***
+ *               /$$       /$$
+ *              | $$      | $$
+ *      /$$$$$$ | $$$$$$$ | $$$$$$$
+ *     /$$__  $$| $$__  $$| $$__  $$
+ *    | $$$$$$$$| $$  \ $$| $$  \ $$
+ *    | $$_____/| $$  | $$| $$  | $$
+ *    |  $$$$$$$| $$  | $$| $$  | $$
+ *     \_______/|__/  |__/|__/  |__/
+ *
+ *
+ *
+ *                                    /$$                       /$$     /$$
+ *                                   |__/                      | $$    |__/
+ *     /$$$$$$$   /$$$$$$  /$$    /$$ /$$  /$$$$$$   /$$$$$$  /$$$$$$   /$$  /$$$$$$  /$$$$$$$
+ *    | $$__  $$ |____  $$|  $$  /$$/| $$ /$$__  $$ |____  $$|_  $$_/  | $$ /$$__  $$| $$__  $$
+ *    | $$  \ $$  /$$$$$$$ \  $$/$$/ | $$| $$  \ $$  /$$$$$$$  | $$    | $$| $$  \ $$| $$  \ $$
+ *    | $$  | $$ /$$__  $$  \  $$$/  | $$| $$  | $$ /$$__  $$  | $$ /$$| $$| $$  | $$| $$  | $$
+ *    | $$  | $$|  $$$$$$$   \  $/   | $$|  $$$$$$$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$
+ *    |__/  |__/ \_______/    \_/    |__/ \____  $$ \_______/   \___/  |__/ \______/ |__/  |__/
+ *                                        /$$  \ $$
+ *                                       |  $$$$$$/
+ *                                        \______/
+ */
 app.config(['$translateProvider', 'eehNavigationProvider', function(
     $translateProvider, eehNavigationProvider) {
 
@@ -283,14 +307,22 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
             iconClass: 'glyphicon-user'
         })
 
+
+    .menuItem('myNavbar.user.profile', {
+        text: 'Profile',
+        iconClass: 'glyphicon-eye-open',
+        state: 'myNavbar.user.profile'
+    })
+
     .menuItem('myNavbar.user.divider1', {
         isDivider: true
     })
 
-    .menuItem('myNavbar.user.profile', {
-        text: 'Blank',
-        iconClass: 'glyphicon-eye-open',
-        state: 'myNavbar.user.profile'
+
+    .menuItem('myNavbar.user.logout', {
+        text: 'Logout',
+        iconClass: 'fa fa-sign-out',
+        state: 'publig.logout'
     })
 
     //language
