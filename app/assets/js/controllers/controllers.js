@@ -1,3 +1,16 @@
+/***
+ *     /$$        /$$$$$$   /$$$$$$  /$$$$$$ /$$   /$$
+ *    | $$       /$$__  $$ /$$__  $$|_  $$_/| $$$ | $$
+ *    | $$      | $$  \ $$| $$  \__/  | $$  | $$$$| $$
+ *    | $$      | $$  | $$| $$ /$$$$  | $$  | $$ $$ $$
+ *    | $$      | $$  | $$| $$|_  $$  | $$  | $$  $$$$
+ *    | $$      | $$  | $$| $$  \ $$  | $$  | $$\  $$$
+ *    | $$$$$$$$|  $$$$$$/|  $$$$$$/ /$$$$$$| $$ \  $$
+ *    |________/ \______/  \______/ |______/|__/  \__/
+ *
+ *
+ *
+ */
 angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log', 'AuthService', '$location',
   function($scope, $log, AuthService, $location) {
   $log.log('load login page');
@@ -16,12 +29,43 @@ angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log', '
 
 }]);
 
+/***
+ *     /$$   /$$  /$$$$$$  /$$      /$$ /$$$$$$$$
+ *    | $$  | $$ /$$__  $$| $$$    /$$$| $$_____/
+ *    | $$  | $$| $$  \ $$| $$$$  /$$$$| $$
+ *    | $$$$$$$$| $$  | $$| $$ $$/$$ $$| $$$$$
+ *    | $$__  $$| $$  | $$| $$  $$$| $$| $$__/
+ *    | $$  | $$| $$  | $$| $$\  $ | $$| $$
+ *    | $$  | $$|  $$$$$$/| $$ \/  | $$| $$$$$$$$
+ *    |__/  |__/ \______/ |__/     |__/|________/
+ *
+ *
+ *
+ */
+angular.module('myApp.controllers').controller('HomeCtrl', function($scope, avLog,$translate) {
 
-angular.module('myApp.controllers').controller('HomeCtrl', function($scope, $log) {
-  $log.log('load home page');
+  var logger = avLog.getLogger('HomeCtrl');
+  // alert($translate.use());
+  logger.debug('current lang: ' + $translate.use());
+  // $translate.use('zh_TW')
+  logger.debug('load home page');
+
 
 });
 
+/***
+ *      /$$$$$$  /$$   /$$  /$$$$$$  /$$$$$$$  /$$$$$$$  /$$$$$$ /$$   /$$  /$$$$$$
+ *     /$$__  $$| $$  | $$ /$$__  $$| $$__  $$| $$__  $$|_  $$_/| $$$ | $$ /$$__  $$
+ *    | $$  \__/| $$  | $$| $$  \ $$| $$  \ $$| $$  \ $$  | $$  | $$$$| $$| $$  \__/
+ *    |  $$$$$$ | $$$$$$$$| $$  | $$| $$$$$$$/| $$$$$$$/  | $$  | $$ $$ $$| $$ /$$$$
+ *     \____  $$| $$__  $$| $$  | $$| $$____/ | $$____/   | $$  | $$  $$$$| $$|_  $$
+ *     /$$  \ $$| $$  | $$| $$  | $$| $$      | $$        | $$  | $$\  $$$| $$  \ $$
+ *    |  $$$$$$/| $$  | $$|  $$$$$$/| $$      | $$       /$$$$$$| $$ \  $$|  $$$$$$/
+ *     \______/ |__/  |__/ \______/ |__/      |__/      |______/|__/  \__/ \______/
+ *
+ *
+ *
+ */
 angular.module('myApp.controllers').controller('ShoppingCtrl', function($scope, $log, $http) {
   $log.log('load list page');
 
@@ -56,6 +100,19 @@ angular.module('myApp.controllers').controller('ShoppingCtrl', function($scope, 
 
 });
 
+/***
+ *      /$$$$$$   /$$$$$$  /$$   /$$ /$$$$$$$$
+ *     /$$__  $$ /$$__  $$| $$$ | $$| $$_____/
+ *    | $$  \__/| $$  \ $$| $$$$| $$| $$
+ *    | $$      | $$  | $$| $$ $$ $$| $$$$$
+ *    | $$      | $$  | $$| $$  $$$$| $$__/
+ *    | $$    $$| $$  | $$| $$\  $$$| $$
+ *    |  $$$$$$/|  $$$$$$/| $$ \  $$| $$
+ *     \______/  \______/ |__/  \__/|__/
+ *
+ *
+ *
+ */
 angular.module('myApp.controllers').controller('ConfCtrl', function($scope, $log) {
 
 });

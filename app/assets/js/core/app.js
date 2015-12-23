@@ -5,13 +5,12 @@ var app, deps;
 deps = [
     // 'ngRoute',
 
-
-
     'pascalprecht.translate', ////i18n support,註解掉會爆
     'ui.bootstrap',
     'ui.router', //use new ui-roter framework
     'ngResource',
     'ngAnimate',
+    'ngCookies',
 
     'avaughan.logging',
 
@@ -40,6 +39,12 @@ app.run(['$rootScope', 'avLog', '$state', '$stateParams', 'AuthService', 'AUTH_E
 
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
+
+
+        $rootScope.$on('$translateChangeSuccess', function () {
+            // Language has changed
+            logger.debug('Language has changed');
+        });
 
 
         //monitor state change
@@ -280,10 +285,12 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
 
     //add navbar
     eehNavigationProvider.menuItem('myNavbar.home', {
-            text: 'Home',
+            // text: 'Home',
+            text: 'HOME',//可以直接綁多國語言的key
             iconClass: 'glyphicon-home',
             weight: -10,
-            href: '#'
+            state: 'public.home'
+                // href: '#'
         })
         .menuItem('myNavbar.shopping', {
             text: 'Shopping',
@@ -307,58 +314,86 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
             iconClass: 'glyphicon-user'
         })
 
-
     .menuItem('myNavbar.user.profile', {
         text: 'Profile',
         iconClass: 'glyphicon-eye-open',
-        state: 'myNavbar.user.profile'
+        state: 'public.profile'
+    })
+
+    .menuItem('myNavbar.user.profile2', {
+        text: 'Profile2',
+        iconClass: 'glyphicon-eye-open',
+        state: 'public.profile2'
     })
 
     .menuItem('myNavbar.user.divider1', {
         isDivider: true
     })
 
-
     .menuItem('myNavbar.user.logout', {
+
         text: 'Logout',
         iconClass: 'fa fa-sign-out',
-        state: 'publig.logout'
-    })
+        click: function() {
+            $window.alert('Faux logout');
+        }
+    });
+
+    /***
+     *     /$$   /$$    /$$$$$$                   /$$$$$$  /$$      /$$ /$$$$$$ /$$$$$$$$ /$$$$$$  /$$   /$$
+     *    |__/ /$$$$   /$$__  $$                 /$$__  $$| $$  /$ | $$|_  $$_/|__  $$__//$$__  $$| $$  | $$
+     *     /$$|_  $$  | $$  \ $$ /$$$$$$$       | $$  \__/| $$ /$$$| $$  | $$     | $$  | $$  \__/| $$  | $$
+     *    | $$  | $$  |  $$$$$$/| $$__  $$      |  $$$$$$ | $$/$$ $$ $$  | $$     | $$  | $$      | $$$$$$$$
+     *    | $$  | $$   >$$__  $$| $$  \ $$       \____  $$| $$$$_  $$$$  | $$     | $$  | $$      | $$__  $$
+     *    | $$  | $$  | $$  \ $$| $$  | $$       /$$  \ $$| $$$/ \  $$$  | $$     | $$  | $$    $$| $$  | $$
+     *    | $$ /$$$$$$|  $$$$$$/| $$  | $$      |  $$$$$$/| $$/   \  $$ /$$$$$$   | $$  |  $$$$$$/| $$  | $$
+     *    |__/|______/ \______/ |__/  |__/       \______/ |__/     \__/|______/   |__/   \______/ |__/  |__/
+     *
+     *
+     *
+     */
+
 
     //language
     var setLanguage = function(languageKey, languageName) {
+        console.log('languageName: ' + languageKey);
+        //set current lang text
         eehNavigationProvider.menuItem('myNavbar.language').text = languageName;
+
+        //switch to lang
         $translateProvider.use(languageKey);
     };
 
     eehNavigationProvider
         .menuItem('myNavbar.language', {
-            text: 'English',
+            text: 'LANG_ZH_TW',
             iconClass: 'glyphicon-globe',
             weight: 0
         })
-        .menuItem('myNavbar.language.en', {
-            text: 'English',
+        //依key的結構可形成子階層效果
+        .menuItem('myNavbar.language.zh_TW', {
+            text: 'LANG_ZH_TW',
             click: function() {
-                setLanguage('en', this.text);
+
+                setLanguage('zh_TW', this.text);
             },
             weight: 1
         })
-        .menuItem('myNavbar.language.de', {
-            text: 'Deutsch',
+        .menuItem('myNavbar.language.en_US', {
+            text: 'LANG_EN_US',
             click: function() {
-                setLanguage('de', this.text);
+                setLanguage('en_US', this.text);
             },
-            weight: 0
+            weight: 2
         });
 
     //add sidebar
     eehNavigationProvider
-        .menuItem('foo.user', {
+        .menuItem('mySideber.user', {
             text: 'Me',
             iconClass: 'fa-user'
         })
-        .menuItem('foo.user.profile', {
+        .menuItem('mySideber.user.profile', {
             text: 'User Profile',
             iconClass: 'fa-user',
             href: '/user-profile'
@@ -366,12 +401,33 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
 
     // Add a menu item that links to "/home" to the "bar" menu.
     eehNavigationProvider
-        .menuItem('bar.home', {
-            text: 'Home',
+        .menuItem('mySideber.home', {
+            text: 'mySideber',
             iconClass: 'fa-home',
             href: '/home'
         });
 }]);
+
+/***
+ *     /$$$$$$$  /$$$$$$$$ /$$$$$$$$ /$$$$$$  /$$   /$$ /$$    /$$$$$$$$       /$$   /$$    /$$$$$$  /$$   /$$
+ *    | $$__  $$| $$_____/| $$_____//$$__  $$| $$  | $$| $$   |__  $$__/      |__/ /$$$$   /$$__  $$| $$$ | $$
+ *    | $$  \ $$| $$      | $$     | $$  \ $$| $$  | $$| $$      | $$          /$$|_  $$  | $$  \ $$| $$$$| $$
+ *    | $$  | $$| $$$$$   | $$$$$  | $$$$$$$$| $$  | $$| $$      | $$         | $$  | $$  |  $$$$$$/| $$ $$ $$
+ *    | $$  | $$| $$__/   | $$__/  | $$__  $$| $$  | $$| $$      | $$         | $$  | $$   >$$__  $$| $$  $$$$
+ *    | $$  | $$| $$      | $$     | $$  | $$| $$  | $$| $$      | $$         | $$  | $$  | $$  \ $$| $$\  $$$
+ *    | $$$$$$$/| $$$$$$$$| $$     | $$  | $$|  $$$$$$/| $$$$$$$$| $$         | $$ /$$$$$$|  $$$$$$/| $$ \  $$
+ *    |_______/ |________/|__/     |__/  |__/ \______/ |________/|__/         |__/|______/ \______/ |__/  \__/
+ *
+ *
+ *
+ */
+app.config(function($translateProvider) {
+
+    $translateProvider.useCookieStorage();
+    // Our translations will go in here
+    $translateProvider.preferredLanguage('zh_TW');
+
+});
 
 
 

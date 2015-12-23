@@ -14,9 +14,16 @@ head.load(
 	// 'libs/angular/angular.min.js',//angular core
 	'libs/angular/angular.js',
 
+	'libs/angular-cookies/angular-cookies.min.js',
+
 	'libs/angular-loader/angular-loader.min.js',
 	'libs/angular-route/angular-route.min.js',
+
 	'libs/angular-translate/angular-translate.min.js',
+	'libs/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js',
+	'libs/angular-translate-storage-local/angular-translate-storage-local.min.js',
+
+
 	'libs/angular-resource/angular-resource.min.js',
 	'libs/angular-translate/angular-translate.min.js',
 	'libs/angular-animate/angular-animate.min.js',
