@@ -28,6 +28,8 @@ deps = [
 //myApp模組可使用的相關相依模組
 app = angular.module('myApp', deps);
 
+
+
 app.run(['$rootScope', 'avLog', '$state', '$stateParams', 'AuthService', 'AUTH_EVENTS', 'USER_ROLES',
     function($rootScope, avLog, $state, $stateParams, AuthService, AUTH_EVENTS, USER_ROLES) {
 
@@ -43,9 +45,14 @@ app.run(['$rootScope', 'avLog', '$state', '$stateParams', 'AuthService', 'AUTH_E
 
         $rootScope.$on('$translateChangeSuccess', function () {
             // Language has changed
-            logger.debug('Language has changed');
+
+            alert('Language has changed');
         });
 
+
+       $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+            alert('route change suc');
+        });
 
         //monitor state change
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -84,6 +91,19 @@ app.run(['$rootScope', 'avLog', '$state', '$stateParams', 'AuthService', 'AUTH_E
     }
 ]);
 
+/***
+ *     /$$$$$$$   /$$$$$$  /$$   /$$ /$$$$$$$$ /$$$$$$$$ /$$$$$$$
+ *    | $$__  $$ /$$__  $$| $$  | $$|__  $$__/| $$_____/| $$__  $$
+ *    | $$  \ $$| $$  \ $$| $$  | $$   | $$   | $$      | $$  \ $$
+ *    | $$$$$$$/| $$  | $$| $$  | $$   | $$   | $$$$$   | $$$$$$$/
+ *    | $$__  $$| $$  | $$| $$  | $$   | $$   | $$__/   | $$__  $$
+ *    | $$  \ $$| $$  | $$| $$  | $$   | $$   | $$      | $$  \ $$
+ *    | $$  | $$|  $$$$$$/|  $$$$$$/   | $$   | $$$$$$$$| $$  | $$
+ *    |__/  |__/ \______/  \______/    |__/   |________/|__/  |__/
+ *
+ *
+ *
+ */
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 'USER_ROLES',
     function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, USER_ROLES) {
 
@@ -279,7 +299,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
  *                                       |  $$$$$$/
  *                                        \______/
  */
-app.config(['$translateProvider', 'eehNavigationProvider', function(
+app.config(['$translateProvider', 'eehNavigationProvider',  function(
     $translateProvider, eehNavigationProvider) {
 
 
@@ -335,7 +355,7 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
         text: 'Logout',
         iconClass: 'fa fa-sign-out',
         click: function() {
-            $window.alert('Faux logout');
+            alert('Ken logout');
         }
     });
 
@@ -362,6 +382,8 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
 
         //switch to lang
         $translateProvider.use(languageKey);
+
+
     };
 
     eehNavigationProvider
@@ -387,25 +409,7 @@ app.config(['$translateProvider', 'eehNavigationProvider', function(
             weight: 2
         });
 
-    //add sidebar
-    eehNavigationProvider
-        .menuItem('mySideber.user', {
-            text: 'Me',
-            iconClass: 'fa-user'
-        })
-        .menuItem('mySideber.user.profile', {
-            text: 'User Profile',
-            iconClass: 'fa-user',
-            href: '/user-profile'
-        });
 
-    // Add a menu item that links to "/home" to the "bar" menu.
-    eehNavigationProvider
-        .menuItem('mySideber.home', {
-            text: 'mySideber',
-            iconClass: 'fa-home',
-            href: '/home'
-        });
 }]);
 
 /***
