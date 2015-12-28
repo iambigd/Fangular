@@ -52,6 +52,7 @@ head.load(
 
 
 	'assets/js/services/authServices.js',//authentication
+	'assets/js/services/translationServices.js',//i18n translation
 
 
 	function() {

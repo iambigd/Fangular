@@ -378,7 +378,8 @@ app.config(['$translateProvider', 'eehNavigationProvider',  function(
     var setLanguage = function(languageKey, languageName) {
         console.log('languageName: ' + languageKey);
         //set current lang text
-        eehNavigationProvider.menuItem('myNavbar.language').text = languageName;
+        eehNavigationProvider
+            .menuItem('myNavbar.language').text = languageName;
 
         //switch to lang
         $translateProvider.use(languageKey);
@@ -428,9 +429,17 @@ app.config(['$translateProvider', 'eehNavigationProvider',  function(
 app.config(function($translateProvider) {
 
     $translateProvider.useCookieStorage();
-    // Our translations will go in here
-    $translateProvider.preferredLanguage('zh_TW');
 
+    // $translateProvider.useLocalStorage();
+
+    // Our translations will go in here
+    // $translateProvider.preferredLanguage('en_US');
+    // $translateProvider.use('en_US')
+
+    // $translateProvider.determinePreferredLanguage(function () {
+        // define a function to determine the language
+        // and return a language key
+    // }) ;
 });
 
 

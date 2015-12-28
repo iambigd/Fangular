@@ -45,6 +45,7 @@ angular.module('myApp.controllers').controller('LoginCtrl', ['$scope', '$log', '
 angular.module('myApp.controllers').controller('HomeCtrl', function($scope, avLog,$translate) {
 
   var logger = avLog.getLogger('HomeCtrl');
+
   // alert($translate.use());
   logger.debug('current lang: ' + $translate.use());
   // $translate.use('zh_TW')
@@ -53,11 +54,22 @@ angular.module('myApp.controllers').controller('HomeCtrl', function($scope, avLo
   $scope.getCurrentLang = function(){
 
     //從$translate觸發的會無法觸發其他ui-view的language
-      alert($translate.use());
+      alert('current lang: ' + $translate.use());
 
       $translate.use($translate.use());
        // $translate.refresh();
   };
+
+  $scope.set_zhTW = function(){
+     $translate.use('zh_TW');
+  };
+
+  $scope.set_enUS = function(){
+    $translate.use('en_US');
+  };
+
+
+
 
 
 });
