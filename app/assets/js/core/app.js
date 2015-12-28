@@ -409,8 +409,6 @@ app.config(['$translateProvider', 'eehNavigationProvider',  function(
             },
             weight: 2
         });
-
-
 }]);
 
 /***
@@ -428,18 +426,20 @@ app.config(['$translateProvider', 'eehNavigationProvider',  function(
  */
 app.config(function($translateProvider) {
 
-    $translateProvider.useCookieStorage();
+    // $translateProvider.useCookieStorage();
 
     // $translateProvider.useLocalStorage();
 
     // Our translations will go in here
-    // $translateProvider.preferredLanguage('en_US');
-    // $translateProvider.use('en_US')
+    // $translateProvider.preferredLanguage('zh_TW');
+    $translateProvider.use('en_US')
 
-    // $translateProvider.determinePreferredLanguage(function () {
+    $translateProvider.determinePreferredLanguage(function () {
         // define a function to determine the language
         // and return a language key
-    // }) ;
+    }) ;
+    console.log($translateProvider);
+    alert($translateProvider.use());
 });
 
 

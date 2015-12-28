@@ -56,8 +56,8 @@ angular.module('myApp.controllers').controller('HomeCtrl', function($scope, avLo
     //從$translate觸發的會無法觸發其他ui-view的language
       alert('current lang: ' + $translate.use());
 
-      $translate.use($translate.use());
-       // $translate.refresh();
+      // $translate.use($translate.use());
+
   };
 
   $scope.set_zhTW = function(){
