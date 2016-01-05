@@ -438,8 +438,8 @@ app.config(function($translateProvider) {
         // define a function to determine the language
         // and return a language key
     }) ;
-    console.log($translateProvider);
-    alert($translateProvider.use());
+    // console.log($translateProvider);
+    // alert($translateProvider.use());
 });
 
 

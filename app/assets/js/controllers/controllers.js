@@ -54,7 +54,7 @@ angular.module('myApp.controllers').controller('HomeCtrl', function($scope, avLo
   $scope.getCurrentLang = function(){
 
     //從$translate觸發的會無法觸發其他ui-view的language
-      alert('current lang: ' + $translate.use());
+      // alert('current lang: ' + $translate.use());
 
       // $translate.use($translate.use());
 
