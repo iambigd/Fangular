@@ -299,12 +299,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpP
  *                                       |  $$$$$$/
  *                                        \______/
  */
-app.config(['$translateProvider', 'eehNavigationProvider',  function(
-    $translateProvider, eehNavigationProvider) {
+app.run(['$translate', 'eehNavigation',  function(
+    $translate, eehNavigation) {
 
 
     //add navbar
-    eehNavigationProvider.menuItem('myNavbar.home', {
+    eehNavigation.menuItem('myNavbar.home', {
             // text: 'Home',
             text: 'HOME',//可以直接綁多國語言的key
             iconClass: 'glyphicon-home',
@@ -328,7 +328,7 @@ app.config(['$translateProvider', 'eehNavigationProvider',  function(
         });
 
     //user info
-    eehNavigationProvider
+    eehNavigation
         .menuItem('myNavbar.user', {
             text: 'KEN',
             iconClass: 'glyphicon-user'
@@ -378,16 +378,16 @@ app.config(['$translateProvider', 'eehNavigationProvider',  function(
     var setLanguage = function(languageKey, languageName) {
         console.log('languageName: ' + languageKey);
         //set current lang text
-        eehNavigationProvider
+        eehNavigation
             .menuItem('myNavbar.language').text = languageName;
 
         //switch to lang
-        $translateProvider.use(languageKey);
+        $translate.use(languageKey);
 
 
     };
 
-    eehNavigationProvider
+    eehNavigation
         .menuItem('myNavbar.language', {
             text: 'LANG_ZH_TW',
             iconClass: 'glyphicon-globe',
